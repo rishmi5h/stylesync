@@ -115,7 +115,7 @@ export default function Sidebar({ activeSection, onNavigate }) {
 
         <div className="p-4 mx-3 mb-4 rounded-xl bg-surface-light/50 border border-surface-lighter">
           <p className="text-xs text-text-muted leading-relaxed">
-            Upload your wardrobe, set your style, and let AI plan your week.
+            Upload your wardrobe, set your style, and discover outfit ideas powered by AI.
           </p>
         </div>
       </aside>
