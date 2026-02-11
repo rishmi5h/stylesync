@@ -89,6 +89,8 @@ function buildWardrobeSummary(wardrobe) {
   }));
 }
 
+export { extractJSON, buildWardrobeSummary };
+
 export async function generateOutfitIdeas(wardrobe, profile, filters = {}) {
   const occasion = filters.occasion || 'any';
   const season = filters.season || 'all_season';
