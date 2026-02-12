@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getWardrobe, getProfile, getWearHistory, getTodayPick, saveTodayPick, addWearEntry } from '../utils/storage';
 import { getTodayPick as fetchTodayPick, getWeather } from '../services/api';
 import OutfitCard from './OutfitCard';
@@ -179,13 +179,7 @@ export default function TodayPick({ onNavigate }) {
       {/* Outfit display */}
       {outfit && !loading && (
         <div className="space-y-3">
-          {reasoning && (
-            <div className="p-3 rounded-xl bg-primary/5 border border-primary/10">
-              <p className="text-xs text-text-muted leading-relaxed"><span className="font-medium text-primary">AI: </span>{reasoning}</p>
-            </div>
-          )}
-
-          <OutfitCard outfit={outfit} />
+          <OutfitCard outfit={outfit} reasoning={reasoning} />
 
           <div className="flex gap-2">
             <button
@@ -195,7 +189,7 @@ export default function TodayPick({ onNavigate }) {
                 worn ? 'bg-success/15 text-success' : 'bg-success/10 hover:bg-success/20 text-success border border-success/20'
               }`}
             >
-              {worn ? 'Logged!' : 'I wore this'}
+              {worn ? 'Logged!' : 'Wore it'}
             </button>
             <button
               onClick={handleRefresh}

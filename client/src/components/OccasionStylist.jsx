@@ -307,16 +307,6 @@ export default function OccasionStylist({ onNavigate }) {
 
               <OutfitCard outfit={outfit} />
 
-              {/* Styling tip — single condensed box */}
-              {outfit.styling_instructions && (
-                <p className="text-[10px] text-text-muted px-1"><span className="text-primary font-medium">Style: </span>{outfit.styling_instructions}</p>
-              )}
-
-              {/* What to avoid — inline */}
-              {outfit.what_to_avoid && (
-                <p className="text-[10px] text-text-muted px-1"><span className="text-danger/80 font-medium">Avoid: </span>{outfit.what_to_avoid}</p>
-              )}
-
               {/* Missing piece — compact */}
               {outfit.missing_piece && (
                 <div className="flex items-center justify-between p-2 rounded-lg bg-accent/5 border border-accent/10">

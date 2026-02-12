@@ -1,16 +1,17 @@
+import { useState } from 'react';
 import { getWardrobe } from '../utils/storage';
 
 const vibeStyles = {
-  casual_chill: { bg: 'bg-green-500/15', text: 'text-green-400', label: 'Casual Chill' },
-  office_ready: { bg: 'bg-blue-500/15', text: 'text-blue-400', label: 'Office Ready' },
-  date_worthy: { bg: 'bg-pink-500/15', text: 'text-pink-400', label: 'Date Worthy' },
-  street_cool: { bg: 'bg-orange-500/15', text: 'text-orange-400', label: 'Street Cool' },
-  ethnic_elegant: { bg: 'bg-amber-500/15', text: 'text-amber-400', label: 'Ethnic Elegant' },
+  casual_chill: { bg: 'bg-green-500/15', text: 'text-green-400', label: 'Casual' },
+  office_ready: { bg: 'bg-blue-500/15', text: 'text-blue-400', label: 'Office' },
+  date_worthy: { bg: 'bg-pink-500/15', text: 'text-pink-400', label: 'Date' },
+  street_cool: { bg: 'bg-orange-500/15', text: 'text-orange-400', label: 'Street' },
+  ethnic_elegant: { bg: 'bg-amber-500/15', text: 'text-amber-400', label: 'Ethnic' },
   indo_western: { bg: 'bg-teal-500/15', text: 'text-teal-400', label: 'Indo-Western' },
-  weekend_brunch: { bg: 'bg-cyan-500/15', text: 'text-cyan-400', label: 'Weekend Brunch' },
-  party_mode: { bg: 'bg-purple-500/15', text: 'text-purple-400', label: 'Party Mode' },
-  travel_comfy: { bg: 'bg-emerald-500/15', text: 'text-emerald-400', label: 'Travel Comfy' },
-  festive_glam: { bg: 'bg-rose-500/15', text: 'text-rose-400', label: 'Festive Glam' },
+  weekend_brunch: { bg: 'bg-cyan-500/15', text: 'text-cyan-400', label: 'Brunch' },
+  party_mode: { bg: 'bg-purple-500/15', text: 'text-purple-400', label: 'Party' },
+  travel_comfy: { bg: 'bg-emerald-500/15', text: 'text-emerald-400', label: 'Travel' },
+  festive_glam: { bg: 'bg-rose-500/15', text: 'text-rose-400', label: 'Festive' },
 };
 
 function ItemThumb({ itemData, wardrobe }) {
@@ -34,7 +35,18 @@ function ItemThumb({ itemData, wardrobe }) {
   );
 }
 
-export default function OutfitCard({ outfit }) {
+/* Truncated text that expands on click */
+function Clamp({ text, label, labelClass = 'text-primary-light' }) {
+  const [open, setOpen] = useState(false);
+  if (!text) return null;
+  return (
+    <p className={`text-[10px] text-text-muted leading-snug ${!open ? 'line-clamp-1' : ''}`} onClick={() => setOpen(!open)}>
+      <span className={`font-medium ${labelClass}`}>{label} </span>{text}
+    </p>
+  );
+}
+
+export default function OutfitCard({ outfit, reasoning }) {
   const wardrobe = getWardrobe();
   const vibe = vibeStyles[outfit.vibe] || vibeStyles.casual_chill;
 
@@ -43,7 +55,7 @@ export default function OutfitCard({ outfit }) {
       {/* Header */}
       <div className="p-3 border-b border-surface-lighter">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="font-bold text-xs leading-snug truncate">{outfit.outfit_name || 'Outfit Idea'}</h3>
+          <h3 className="font-semibold text-xs leading-snug truncate">{outfit.outfit_name || 'Outfit'}</h3>
           <span className={`shrink-0 px-2 py-0.5 rounded-full text-[9px] font-semibold ${vibe.bg} ${vibe.text}`}>
             {vibe.label}
           </span>
@@ -51,15 +63,13 @@ export default function OutfitCard({ outfit }) {
         {outfit.color_palette && (
           <div className="flex items-center gap-1 mt-1.5 overflow-x-auto scrollbar-none">
             {outfit.color_palette.map((color, i) => (
-              <span key={i} className="px-1.5 py-0.5 rounded-full text-[8px] bg-surface-lighter capitalize whitespace-nowrap">
-                {color}
-              </span>
+              <span key={i} className="px-1.5 py-0.5 rounded-full text-[8px] bg-surface-lighter capitalize whitespace-nowrap">{color}</span>
             ))}
           </div>
         )}
       </div>
 
-      {/* Outfit Items */}
+      {/* Items */}
       <div className="p-3">
         <div className="flex flex-wrap gap-2 justify-center">
           {outfit.items?.top && <ItemThumb itemData={outfit.items.top} wardrobe={wardrobe} />}
@@ -72,18 +82,13 @@ export default function OutfitCard({ outfit }) {
         </div>
       </div>
 
-      {/* Footer — condensed into one block */}
-      {(outfit.style_tip || outfit.best_for || outfit.weather_note) && (
-        <div className="px-3 pb-3 space-y-0.5">
-          {outfit.style_tip && (
-            <p className="text-[10px] text-text-muted"><span className="text-primary-light font-medium">Tip: </span>{outfit.style_tip}</p>
-          )}
-          {outfit.best_for && (
-            <p className="text-[10px] text-text-muted"><span className="font-medium text-text">For: </span>{outfit.best_for}</p>
-          )}
-          {outfit.weather_note && (
-            <p className="text-[10px] text-amber-400/80">{outfit.weather_note}</p>
-          )}
+      {/* Footer — all clamped to 1 line, tap to expand */}
+      {(reasoning || outfit.style_tip || outfit.best_for || outfit.weather_note) && (
+        <div className="px-3 pb-2.5 space-y-0.5">
+          <Clamp text={reasoning} label="AI:" labelClass="text-primary" />
+          <Clamp text={outfit.style_tip} label="Tip:" />
+          <Clamp text={outfit.best_for} label="For:" labelClass="text-text" />
+          <Clamp text={outfit.weather_note} label="Weather:" labelClass="text-amber-400/80" />
         </div>
       )}
     </div>
