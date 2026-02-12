@@ -114,34 +114,23 @@ export default function OccasionStylist({ onNavigate }) {
   return (
     <div className="max-w-3xl mx-auto">
       {/* Header */}
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold">Occasion Stylist</h2>
-        <p className="text-sm text-text-muted mt-1">Event-perfect outfits from your wardrobe</p>
+      <div className="mb-4">
+        <h2 className="text-xl sm:text-2xl font-bold">Occasion Stylist</h2>
       </div>
 
-      {/* Setup hints — compact */}
+      {/* Setup hints */}
       {!isReady && !generated && !loading && (
-        <div className="mb-6 space-y-2">
+        <div className="mb-4 space-y-2">
           {!hasProfile && (
-            <div className="flex items-center justify-between p-3 rounded-xl bg-primary/5 border border-primary/10">
-              <p className="text-sm text-text-muted">Set up your profile first</p>
-              <button
-                onClick={() => onNavigate('profile')}
-                className="shrink-0 px-3 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-medium transition-colors"
-              >
-                Set Up
-              </button>
+            <div className="flex items-center justify-between p-2.5 rounded-lg bg-primary/5 border border-primary/10">
+              <p className="text-xs text-text-muted">Complete your profile</p>
+              <button onClick={() => onNavigate('profile')} className="shrink-0 px-2.5 py-1 rounded-md bg-primary/10 hover:bg-primary/20 text-primary text-xs font-medium">Set Up</button>
             </div>
           )}
           {!hasWardrobe && (
-            <div className="flex items-center justify-between p-3 rounded-xl bg-accent/5 border border-accent/10">
-              <p className="text-sm text-text-muted">Add {3 - wardrobe.length} more item{3 - wardrobe.length !== 1 ? 's' : ''} to your wardrobe</p>
-              <button
-                onClick={() => onNavigate('wardrobe')}
-                className="shrink-0 px-3 py-1.5 rounded-lg bg-accent/10 hover:bg-accent/20 text-accent text-xs font-medium transition-colors"
-              >
-                Add
-              </button>
+            <div className="flex items-center justify-between p-2.5 rounded-lg bg-accent/5 border border-accent/10">
+              <p className="text-xs text-text-muted">Add {Math.max(0, 3 - wardrobe.length)} more item{3 - wardrobe.length !== 1 ? 's' : ''}</p>
+              <button onClick={() => onNavigate('wardrobe')} className="shrink-0 px-2.5 py-1 rounded-md bg-accent/10 hover:bg-accent/20 text-accent text-xs font-medium">Add</button>
             </div>
           )}
         </div>
@@ -149,47 +138,44 @@ export default function OccasionStylist({ onNavigate }) {
 
       {/* Event form */}
       {!generated && (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* Popular events */}
           <div>
-            <label className="block text-sm font-semibold mb-3">What's the occasion?</label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <label className="block text-xs font-semibold text-text-muted mb-2">Occasion</label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
               {POPULAR_EVENTS.map((et) => (
                 <button
                   key={et.value}
                   onClick={() => setEvent({ ...event, type: et.value })}
-                  className={`flex items-center gap-2 px-3 py-3 rounded-xl text-sm font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all ${
                     event.type === et.value
                       ? 'bg-primary/15 text-primary border border-primary/30'
                       : 'bg-surface-light hover:bg-surface-lighter text-text-muted border border-surface-lighter'
                   }`}
                 >
-                  <span className="text-base">{et.emoji}</span>
+                  <span className="text-sm">{et.emoji}</span>
                   <span className="truncate">{et.label}</span>
                 </button>
               ))}
             </div>
 
             {!showMore ? (
-              <button
-                onClick={() => setShowMore(true)}
-                className="mt-3 text-xs text-primary hover:text-primary-light transition-colors font-medium"
-              >
+              <button onClick={() => setShowMore(true)} className="mt-2 text-[10px] text-primary hover:text-primary-light font-medium">
                 + {MORE_EVENTS.length} more
               </button>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 mt-1.5">
                 {MORE_EVENTS.map((et) => (
                   <button
                     key={et.value}
                     onClick={() => setEvent({ ...event, type: et.value })}
-                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                    className={`flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all ${
                       event.type === et.value
                         ? 'bg-primary/15 text-primary border border-primary/30'
                         : 'bg-surface-light hover:bg-surface-lighter text-text-muted border border-surface-lighter'
                     }`}
                   >
-                    <span className="text-base">{et.emoji}</span>
+                    <span className="text-sm">{et.emoji}</span>
                     <span className="truncate">{et.label}</span>
                   </button>
                 ))}
@@ -202,63 +188,46 @@ export default function OccasionStylist({ onNavigate }) {
             <div>
               <button
                 onClick={() => setShowDetails(!showDetails)}
-                className="flex items-center gap-2 text-xs font-medium text-text-muted hover:text-text transition-colors mb-3"
+                className="flex items-center gap-1.5 text-[10px] font-medium text-text-muted hover:text-text transition-colors mb-2"
               >
-                <svg className={`w-3.5 h-3.5 transition-transform ${showDetails ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className={`w-3 h-3 transition-transform ${showDetails ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
-                Add details (optional)
+                Details (optional)
               </button>
 
               {showDetails && (
-                <div className="space-y-4 animate-in">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="space-y-3 animate-in">
+                  <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <label className="block text-xs font-medium text-text-muted mb-1.5">Venue</label>
-                      <select
-                        value={event.venue}
-                        onChange={(e) => setEvent({ ...event, venue: e.target.value })}
-                        className="w-full bg-surface-light border border-surface-lighter rounded-xl px-3 py-2.5 text-sm text-text focus:outline-none focus:border-primary/50"
-                      >
+                      <label className="block text-[10px] font-medium text-text-muted mb-1">Venue</label>
+                      <select value={event.venue} onChange={(e) => setEvent({ ...event, venue: e.target.value })}
+                        className="w-full bg-surface-light border border-surface-lighter rounded-lg px-2 py-2 text-xs text-text focus:outline-none focus:border-primary/50">
                         <option value="">Any</option>
                         {VENUE_OPTIONS.map((v) => <option key={v} value={v.toLowerCase()}>{v}</option>)}
                       </select>
                     </div>
-
                     <div>
-                      <label className="block text-xs font-medium text-text-muted mb-1.5">Time</label>
-                      <select
-                        value={event.time}
-                        onChange={(e) => setEvent({ ...event, time: e.target.value })}
-                        className="w-full bg-surface-light border border-surface-lighter rounded-xl px-3 py-2.5 text-sm text-text focus:outline-none focus:border-primary/50"
-                      >
+                      <label className="block text-[10px] font-medium text-text-muted mb-1">Time</label>
+                      <select value={event.time} onChange={(e) => setEvent({ ...event, time: e.target.value })}
+                        className="w-full bg-surface-light border border-surface-lighter rounded-lg px-2 py-2 text-xs text-text focus:outline-none focus:border-primary/50">
                         <option value="">Any</option>
                         {TIME_OPTIONS.map((t) => <option key={t} value={t.toLowerCase()}>{t}</option>)}
                       </select>
                     </div>
-
                     <div>
-                      <label className="block text-xs font-medium text-text-muted mb-1.5">Formality</label>
-                      <select
-                        value={event.formality}
-                        onChange={(e) => setEvent({ ...event, formality: e.target.value })}
-                        className="w-full bg-surface-light border border-surface-lighter rounded-xl px-3 py-2.5 text-sm text-text focus:outline-none focus:border-primary/50"
-                      >
+                      <label className="block text-[10px] font-medium text-text-muted mb-1">Formality</label>
+                      <select value={event.formality} onChange={(e) => setEvent({ ...event, formality: e.target.value })}
+                        className="w-full bg-surface-light border border-surface-lighter rounded-lg px-2 py-2 text-xs text-text focus:outline-none focus:border-primary/50">
                         <option value="">Any</option>
                         {FORMALITY_OPTIONS.map((f) => <option key={f} value={f.toLowerCase()}>{f}</option>)}
                       </select>
                     </div>
                   </div>
-
-                  <div>
-                    <label className="block text-xs font-medium text-text-muted mb-1.5">Notes</label>
-                    <textarea
-                      value={event.notes}
-                      onChange={(e) => setEvent({ ...event, notes: e.target.value })}
-                      placeholder="e.g., 'Conservative family', 'Outdoor, might rain'..."
-                      className="w-full bg-surface-light border border-surface-lighter rounded-xl px-4 py-3 text-sm text-text placeholder:text-text-muted/50 focus:outline-none focus:border-primary/50 resize-none h-16"
-                    />
-                  </div>
+                  <textarea value={event.notes} onChange={(e) => setEvent({ ...event, notes: e.target.value })}
+                    placeholder="e.g., Conservative family, might rain..."
+                    className="w-full bg-surface-light border border-surface-lighter rounded-lg px-3 py-2 text-xs text-text placeholder:text-text-muted/50 focus:outline-none focus:border-primary/50 resize-none h-14"
+                  />
                 </div>
               )}
             </div>
@@ -269,16 +238,13 @@ export default function OccasionStylist({ onNavigate }) {
             <button
               onClick={handleGenerate}
               disabled={loading || !isReady}
-              className={`w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+              className={`w-full py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 isReady
-                  ? 'bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white shadow-lg shadow-primary/20'
+                  ? 'bg-primary hover:bg-primary-dark text-white'
                   : 'bg-surface-lighter text-text-muted cursor-not-allowed'
               }`}
             >
-              {isReady
-                ? `Style Me for ${selectedEvent?.label || 'this event'}`
-                : 'Complete setup first'
-              }
+              {isReady ? `Style Me` : 'Complete setup first'}
             </button>
           )}
         </div>
@@ -286,109 +252,84 @@ export default function OccasionStylist({ onNavigate }) {
 
       {/* Loading state */}
       {loading && (
-        <div className="text-center py-16">
-          <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 animate-pulse">
-            <svg className="w-7 h-7 text-primary animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-            </svg>
-          </div>
-          <p className="text-sm text-text-muted animate-pulse">{loadingMsg}</p>
+        <div className="flex flex-col items-center py-16">
+          <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="text-xs text-text-muted animate-pulse">{loadingMsg}</p>
         </div>
       )}
 
       {/* Error */}
       {error && (
-        <div className="mb-6 p-4 rounded-xl bg-danger/10 border border-danger/20">
-          <p className="text-sm text-danger">{error}</p>
-          <button onClick={handleGenerate} className="mt-2 text-xs text-danger/80 hover:text-danger underline">
-            Try again
-          </button>
+        <div className="mb-4 p-3 rounded-xl bg-danger/10 border border-danger/20 text-danger text-xs">
+          {error}<button onClick={handleGenerate} className="ml-2 underline">Retry</button>
         </div>
       )}
 
       {/* Results */}
       {generated && outfits.length > 0 && !loading && (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* Event summary */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-xl">{selectedEvent?.emoji}</span>
-              <div>
-                <h3 className="text-sm font-semibold">{selectedEvent?.label}</h3>
-                <p className="text-xs text-text-muted">
-                  {[event.venue, event.time, event.formality].filter(Boolean).join(' · ') || 'General'}
-                </p>
-              </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-base">{selectedEvent?.emoji}</span>
+              <span className="text-xs font-semibold">{selectedEvent?.label}</span>
+              <span className="text-[10px] text-text-muted ml-1">
+                {[event.venue, event.time, event.formality].filter(Boolean).join(' · ')}
+              </span>
             </div>
-            <button onClick={handleReset} className="px-4 py-2 rounded-xl text-xs font-medium bg-surface-lighter hover:bg-surface-lighter/80 text-text-muted transition-colors">
-              New Event
+            <button onClick={handleReset} className="px-3 py-1.5 rounded-lg text-[10px] font-medium bg-surface-lighter hover:bg-surface-lighter/80 text-text-muted">
+              New
             </button>
           </div>
 
           {/* Outfit cards */}
           {outfits.map((outfit, idx) => (
-            <div key={idx} className="space-y-3">
-              {/* Rank badge */}
-              <div className="flex items-center gap-2">
-                <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+            <div key={idx} className="space-y-2">
+              {/* Rank + score inline */}
+              <div className="flex items-center gap-1.5">
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                   idx === 0 ? 'bg-amber-500/15 text-amber-400' :
                   idx === 1 ? 'bg-slate-400/15 text-slate-400' :
                   'bg-orange-700/15 text-orange-400'
                 }`}>
-                  {idx === 0 ? 'Best Pick' : idx === 1 ? 'Runner Up' : 'Option 3'}
+                  #{idx + 1}
                 </span>
                 {outfit.completeness_score && (
-                  <span className={`px-2 py-1 rounded-full text-[10px] font-medium ${
+                  <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-medium ${
                     outfit.completeness_score >= 90 ? 'bg-success/15 text-success' :
                     outfit.completeness_score >= 70 ? 'bg-amber-500/15 text-amber-400' :
                     'bg-danger/15 text-danger'
                   }`}>
-                    {outfit.completeness_score}% match
+                    {outfit.completeness_score}%
                   </span>
                 )}
               </div>
 
               <OutfitCard outfit={outfit} />
 
-              {/* Styling instructions */}
+              {/* Styling tip — single condensed box */}
               {outfit.styling_instructions && (
-                <div className="p-3 rounded-xl bg-primary/5 border border-primary/10">
-                  <p className="text-xs font-medium text-primary mb-1">How to style</p>
-                  <p className="text-xs text-text-muted leading-relaxed">{outfit.styling_instructions}</p>
-                </div>
+                <p className="text-[10px] text-text-muted px-1"><span className="text-primary font-medium">Style: </span>{outfit.styling_instructions}</p>
               )}
 
-              {/* What to avoid */}
+              {/* What to avoid — inline */}
               {outfit.what_to_avoid && (
-                <div className="p-3 rounded-xl bg-danger/5 border border-danger/10">
-                  <p className="text-xs font-medium text-danger/80 mb-1">Avoid</p>
-                  <p className="text-xs text-text-muted leading-relaxed">{outfit.what_to_avoid}</p>
-                </div>
+                <p className="text-[10px] text-text-muted px-1"><span className="text-danger/80 font-medium">Avoid: </span>{outfit.what_to_avoid}</p>
               )}
 
-              {/* Missing piece */}
+              {/* Missing piece — compact */}
               {outfit.missing_piece && (
-                <div className="p-3 rounded-xl bg-accent/5 border border-accent/15">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs font-medium text-accent">Missing piece</p>
-                      <p className="text-sm font-medium capitalize mt-0.5">{outfit.missing_piece.item_type}</p>
-                      {outfit.missing_piece.estimated_price && (
-                        <p className="text-xs text-text-muted mt-0.5">{outfit.missing_piece.estimated_price}</p>
-                      )}
-                    </div>
-                    {outfit.missing_piece.search_query && (
-                      <a
-                        href={`https://www.myntra.com/${outfit.missing_piece.search_query.replace(/\s+/g, '-')}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="shrink-0 px-3 py-2 rounded-lg bg-accent/10 hover:bg-accent/20 text-accent text-xs font-medium transition-colors"
-                      >
-                        Shop
-                      </a>
-                    )}
-                  </div>
+                <div className="flex items-center justify-between p-2 rounded-lg bg-accent/5 border border-accent/10">
+                  <p className="text-[10px] text-text-muted">
+                    <span className="text-accent font-medium">Need: </span>
+                    <span className="capitalize">{outfit.missing_piece.item_type}</span>
+                    {outfit.missing_piece.estimated_price && <span className="text-text-muted/60"> · {outfit.missing_piece.estimated_price}</span>}
+                  </p>
+                  {outfit.missing_piece.search_query && (
+                    <a href={`https://www.myntra.com/${outfit.missing_piece.search_query.replace(/\s+/g, '-')}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="shrink-0 px-2 py-0.5 rounded text-[10px] bg-accent/10 hover:bg-accent/20 text-accent font-medium">Shop</a>
+                  )}
                 </div>
               )}
             </div>

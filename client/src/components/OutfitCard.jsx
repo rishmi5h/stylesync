@@ -18,19 +18,16 @@ function ItemThumb({ itemData, wardrobe }) {
   if (!itemData) return null;
 
   return (
-    <div className="flex flex-col items-center gap-1.5">
+    <div className="flex flex-col items-center gap-1">
       {item?.image ? (
-        <img
-          src={item.image}
-          alt={itemData.name}
-          className="w-16 h-16 rounded-xl object-cover border border-surface-lighter shadow-sm"
-        />
+        <img src={item.image} alt={itemData.name}
+          className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg object-cover border border-surface-lighter" />
       ) : (
-        <div className="w-16 h-16 rounded-xl bg-surface-lighter flex items-center justify-center border border-surface-lighter">
-          <span className="text-[10px] text-text-muted text-center px-1 leading-tight">{itemData.name || '?'}</span>
+        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-surface-lighter flex items-center justify-center border border-surface-lighter">
+          <span className="text-[9px] text-text-muted text-center px-1 leading-tight">{itemData.name || '?'}</span>
         </div>
       )}
-      <span className="text-[10px] text-text-muted text-center leading-tight max-w-16 line-clamp-2">
+      <span className="text-[9px] text-text-muted text-center leading-tight max-w-14 sm:max-w-16 line-clamp-1">
         {itemData.name}
       </span>
     </div>
@@ -42,20 +39,19 @@ export default function OutfitCard({ outfit }) {
   const vibe = vibeStyles[outfit.vibe] || vibeStyles.casual_chill;
 
   return (
-    <div className="bg-surface-light rounded-2xl border border-surface-lighter overflow-hidden hover:border-primary/20 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 group">
+    <div className="bg-surface-light rounded-xl border border-surface-lighter overflow-hidden hover:border-primary/20 transition-all group">
       {/* Header */}
-      <div className="p-4 border-b border-surface-lighter">
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <h3 className="font-bold text-sm leading-snug">{outfit.outfit_name || 'Outfit Idea'}</h3>
-          <span className={`shrink-0 px-2.5 py-1 rounded-full text-[10px] font-semibold ${vibe.bg} ${vibe.text}`}>
+      <div className="p-3 border-b border-surface-lighter">
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="font-bold text-xs leading-snug truncate">{outfit.outfit_name || 'Outfit Idea'}</h3>
+          <span className={`shrink-0 px-2 py-0.5 rounded-full text-[9px] font-semibold ${vibe.bg} ${vibe.text}`}>
             {vibe.label}
           </span>
         </div>
         {outfit.color_palette && (
-          <div className="flex items-center gap-1.5 mt-2">
-            <span className="text-[10px] text-text-muted mr-1">Colors:</span>
+          <div className="flex items-center gap-1 mt-1.5 overflow-x-auto scrollbar-none">
             {outfit.color_palette.map((color, i) => (
-              <span key={i} className="px-2 py-0.5 rounded-full text-[9px] bg-surface-lighter capitalize">
+              <span key={i} className="px-1.5 py-0.5 rounded-full text-[8px] bg-surface-lighter capitalize whitespace-nowrap">
                 {color}
               </span>
             ))}
@@ -64,8 +60,8 @@ export default function OutfitCard({ outfit }) {
       </div>
 
       {/* Outfit Items */}
-      <div className="p-4">
-        <div className="flex flex-wrap gap-3 justify-center">
+      <div className="p-3">
+        <div className="flex flex-wrap gap-2 justify-center">
           {outfit.items?.top && <ItemThumb itemData={outfit.items.top} wardrobe={wardrobe} />}
           {outfit.items?.bottom && <ItemThumb itemData={outfit.items.bottom} wardrobe={wardrobe} />}
           {outfit.items?.footwear && <ItemThumb itemData={outfit.items.footwear} wardrobe={wardrobe} />}
@@ -76,28 +72,20 @@ export default function OutfitCard({ outfit }) {
         </div>
       </div>
 
-      {/* Style Tip */}
-      {outfit.style_tip && (
-        <div className="mx-4 mb-3 p-3 rounded-xl bg-primary/5 border border-primary/10">
-          <p className="text-xs text-primary-light leading-relaxed">
-            <span className="font-semibold">Tip: </span>{outfit.style_tip}
-          </p>
+      {/* Footer — condensed into one block */}
+      {(outfit.style_tip || outfit.best_for || outfit.weather_note) && (
+        <div className="px-3 pb-3 space-y-0.5">
+          {outfit.style_tip && (
+            <p className="text-[10px] text-text-muted"><span className="text-primary-light font-medium">Tip: </span>{outfit.style_tip}</p>
+          )}
+          {outfit.best_for && (
+            <p className="text-[10px] text-text-muted"><span className="font-medium text-text">For: </span>{outfit.best_for}</p>
+          )}
+          {outfit.weather_note && (
+            <p className="text-[10px] text-amber-400/80">{outfit.weather_note}</p>
+          )}
         </div>
       )}
-
-      {/* Footer Info */}
-      <div className="px-4 pb-4 space-y-1.5">
-        {outfit.best_for && (
-          <p className="text-[11px] text-text-muted">
-            <span className="font-medium text-text">Best for: </span>{outfit.best_for}
-          </p>
-        )}
-        {outfit.weather_note && (
-          <p className="text-[11px] text-amber-400/80">
-            <span className="font-medium">Weather: </span>{outfit.weather_note}
-          </p>
-        )}
-      </div>
     </div>
   );
 }
