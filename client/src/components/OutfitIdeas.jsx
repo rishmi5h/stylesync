@@ -4,12 +4,12 @@ import { getWardrobe, getProfile, getOutfitPlan, saveOutfitPlan } from '../utils
 import OutfitCard from './OutfitCard';
 
 const loadingPhrases = [
-  'Mixing and matching your wardrobe...',
-  'Applying color theory magic...',
-  'Finding the perfect combos...',
-  'Your AI stylist is thinking...',
-  'Creating looks you\'ll love...',
-  'Almost there, curating fire outfits...',
+  'Mixing and matching...',
+  'Applying color theory...',
+  'Finding combos...',
+  'AI stylist is thinking...',
+  'Creating looks...',
+  'Almost there...',
 ];
 
 const occasionFilters = [
@@ -89,7 +89,7 @@ export default function OutfitIdeas({ onNavigate }) {
       saveOutfitPlan(ideas);
       setOutfits(ideas);
     } catch (err) {
-      setError(err.message || 'Failed to generate outfit ideas. Please try again.');
+      setError(err.message || 'Failed to generate. Please try again.');
     } finally {
       clearInterval(interval);
       setLoading(false);
@@ -102,47 +102,9 @@ export default function OutfitIdeas({ onNavigate }) {
       : outfits.filter((o) => o.vibe === activeVibeFilter)
     : [];
 
-  if (!profile) {
-    return (
-      <div className="text-center py-20">
-        <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-surface-light flex items-center justify-center">
-          <svg className="w-10 h-10 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-          </svg>
-        </div>
-        <h3 className="text-lg font-semibold mb-2">Set up your style profile first</h3>
-        <p className="text-text-muted text-sm mb-6">We need to know your style preferences to generate outfit ideas.</p>
-        <button
-          onClick={() => onNavigate('profile')}
-          className="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-sm font-medium transition-colors"
-        >
-          Go to Style Profile
-        </button>
-      </div>
-    );
-  }
-
-  if (wardrobe.length < 2) {
-    return (
-      <div className="text-center py-20">
-        <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-surface-light flex items-center justify-center">
-          <svg className="w-10 h-10 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.41a2.25 2.25 0 013.182 0l2.909 2.91m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-          </svg>
-        </div>
-        <h3 className="text-lg font-semibold mb-2">Add items to your wardrobe</h3>
-        <p className="text-text-muted text-sm mb-6">
-          You need at least 2 items to generate outfit ideas. You have {wardrobe.length}.
-        </p>
-        <button
-          onClick={() => onNavigate('wardrobe')}
-          className="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-sm font-medium transition-colors"
-        >
-          Go to Wardrobe
-        </button>
-      </div>
-    );
-  }
+  const hasProfile = !!profile;
+  const hasWardrobe = wardrobe.length >= 2;
+  const isReady = hasProfile && hasWardrobe;
 
   return (
     <div>
@@ -151,15 +113,36 @@ export default function OutfitIdeas({ onNavigate }) {
         <h2 className="text-2xl font-bold">Outfit Ideas</h2>
         <p className="text-text-muted text-sm mt-1">
           {outfits && outfits.length > 0
-            ? `${outfits.length} outfit combinations from your ${wardrobe.length} items`
-            : `Discover all possible looks from your ${wardrobe.length} wardrobe items`
+            ? `${outfits.length} combos from ${wardrobe.length} items`
+            : `Discover looks from your ${wardrobe.length} items`
           }
         </p>
       </div>
 
+      {/* Setup hints — compact */}
+      {!isReady && (
+        <div className="mb-6 space-y-2">
+          {!hasProfile && (
+            <div className="flex items-center justify-between p-3 rounded-xl bg-primary/5 border border-primary/10">
+              <p className="text-sm text-text-muted">Set up your profile first</p>
+              <button onClick={() => onNavigate('profile')} className="shrink-0 px-3 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-medium transition-colors">
+                Set Up
+              </button>
+            </div>
+          )}
+          {!hasWardrobe && (
+            <div className="flex items-center justify-between p-3 rounded-xl bg-accent/5 border border-accent/10">
+              <p className="text-sm text-text-muted">Add {Math.max(0, 2 - wardrobe.length)} more item{2 - wardrobe.length !== 1 ? 's' : ''}</p>
+              <button onClick={() => onNavigate('wardrobe')} className="shrink-0 px-3 py-1.5 rounded-lg bg-accent/10 hover:bg-accent/20 text-accent text-xs font-medium transition-colors">
+                Add
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Filters */}
       <div className="mb-6 space-y-3">
-        {/* Occasion */}
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-xs font-semibold text-text-muted w-16 shrink-0">Occasion</span>
           <div className="flex flex-wrap gap-1.5">
@@ -179,7 +162,6 @@ export default function OutfitIdeas({ onNavigate }) {
           </div>
         </div>
 
-        {/* Season */}
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-xs font-semibold text-text-muted w-16 shrink-0">Season</span>
           <div className="flex flex-wrap gap-1.5">
@@ -199,7 +181,6 @@ export default function OutfitIdeas({ onNavigate }) {
           </div>
         </div>
 
-        {/* Mood */}
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-xs font-semibold text-text-muted w-16 shrink-0">Mood</span>
           <div className="flex flex-wrap gap-1.5">
@@ -224,8 +205,12 @@ export default function OutfitIdeas({ onNavigate }) {
       <div className="mb-8">
         <button
           onClick={handleGenerate}
-          disabled={loading}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary-dark disabled:opacity-50 text-white font-semibold text-sm transition-all shadow-lg shadow-primary/20"
+          disabled={loading || !isReady}
+          className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all shadow-lg ${
+            isReady
+              ? 'bg-primary hover:bg-primary-dark disabled:opacity-50 text-white shadow-primary/20'
+              : 'bg-surface-lighter text-text-muted cursor-not-allowed shadow-none'
+          }`}
         >
           {loading ? (
             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -247,9 +232,8 @@ export default function OutfitIdeas({ onNavigate }) {
 
       {loading && (
         <div className="flex flex-col items-center justify-center py-20">
-          <div className="w-16 h-16 border-3 border-primary border-t-transparent rounded-full animate-spin mb-6" />
+          <div className="w-14 h-14 border-3 border-primary border-t-transparent rounded-full animate-spin mb-5" />
           <p className="text-sm font-medium animate-pulse">{loadingMsg}</p>
-          <p className="text-xs text-text-muted mt-2">This may take 15-30 seconds</p>
         </div>
       )}
 
@@ -284,21 +268,21 @@ export default function OutfitIdeas({ onNavigate }) {
           </div>
 
           {filteredOutfits.length === 0 && (
-            <p className="text-center text-text-muted text-sm py-10">No outfits match this vibe filter.</p>
+            <p className="text-center text-text-muted text-sm py-10">No outfits match this filter.</p>
           )}
         </>
       )}
 
       {!loading && (!outfits || outfits.length === 0) && (
         <div className="text-center py-16">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-surface-light flex items-center justify-center">
-            <svg className="w-10 h-10 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+          <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-surface-light flex items-center justify-center">
+            <svg className="w-8 h-8 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold mb-2">Discover what you can wear</h3>
-          <p className="text-text-muted text-sm max-w-md mx-auto">
-            Select your filters above and hit generate. Our AI will find every stylish combination possible from your wardrobe.
+          <h3 className="text-lg font-semibold mb-1">Discover what you can wear</h3>
+          <p className="text-text-muted text-sm max-w-sm mx-auto">
+            Set your filters and generate — AI finds every combo from your wardrobe.
           </p>
         </div>
       )}

@@ -42,7 +42,7 @@ export default function OutfitCard({ outfit }) {
   const vibe = vibeStyles[outfit.vibe] || vibeStyles.casual_chill;
 
   return (
-    <div className="bg-surface-light rounded-2xl border border-surface-lighter overflow-hidden hover:border-primary/20 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
+    <div className="bg-surface-light rounded-2xl border border-surface-lighter overflow-hidden hover:border-primary/20 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 group">
       {/* Header */}
       <div className="p-4 border-b border-surface-lighter">
         <div className="flex items-start justify-between gap-2 mb-2">

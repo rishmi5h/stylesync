@@ -166,6 +166,174 @@ IMPORTANT:
   return await callGroq(systemPrompt, userMessage);
 }
 
+export async function generateTodayPick(wardrobe, profile, weather, wearHistory = [], rejectedPicks = []) {
+  const today = new Date();
+  const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
+  const dateStr = today.toISOString().split('T')[0];
+  const todayOccasion = profile.schedule?.[dayName.toLowerCase()] || 'casual';
+
+  const recentItemIds = wearHistory
+    .filter((entry) => {
+      const diff = (today - new Date(entry.date)) / (1000 * 60 * 60 * 24);
+      return diff <= 7;
+    })
+    .flatMap((entry) => entry.outfit_items || []);
+
+  const rejectedCombos = rejectedPicks.map((p) => p.items).filter(Boolean);
+
+  const systemPrompt = `You are a premium personal AI stylist for an Indian fashion-conscious user. Pick THE SINGLE BEST outfit for today from their wardrobe.
+
+CONTEXT:
+- Today is ${dayName}, ${dateStr}
+- Today's planned activity: ${todayOccasion}
+- Weather: ${weather ? `${weather.temp_min}°C - ${weather.temp_max}°C, ${weather.weather_summary || 'clear'}, precipitation chance: ${weather.precipitation_chance || 0}%` : 'Not available'}
+- User location: ${profile.location || 'India'}
+- User style preferences: ${(profile.styles || []).join(', ') || 'not set'}
+
+RULES:
+- Use ONLY items from the wardrobe (reference by exact item ID)
+- AVOID these recently worn item IDs (worn in last 7 days): ${JSON.stringify(recentItemIds)}
+- AVOID these rejected outfit combinations: ${JSON.stringify(rejectedCombos)}
+- Every outfit needs: top/ethnic_top + bottom/ethnic_bottom + footwear (OR ethnic_set + footwear)
+- Consider today's weather carefully — don't suggest heavy fabrics in 35°C+ heat
+- Consider the occasion — office needs smart_casual minimum, date_night needs date_worthy
+- Pick the SINGLE BEST option, not multiple
+
+Return a JSON object (NOT an array):
+{
+  "outfit_name": "The Tuesday Power Move",
+  "vibe": "office_ready",
+  "occasion": "${todayOccasion}",
+  "items": {
+    "top": { "item_id": "xxx", "name": "white oxford shirt" },
+    "bottom": { "item_id": "xxx", "name": "navy chinos" },
+    "footwear": { "item_id": "xxx", "name": "brown loafers" },
+    "outerwear": null,
+    "accessories": []
+  },
+  "color_palette": ["white", "navy", "brown"],
+  "style_tip": "Roll up the sleeves for a relaxed vibe in this weather.",
+  "best_for": "${todayOccasion}",
+  "weather_note": "Perfect for today's 28°C with light breeze in Mumbai",
+  "reasoning": "It's a warm Tuesday office day at 32°C in Mumbai. This breathable cotton shirt with chinos is ideal — you haven't worn the shirt in 10 days, and the navy-white combo is fresh and professional. The loafers elevate it from casual to smart-casual."
+}
+
+IMPORTANT:
+- The "reasoning" field should explain WHY this outfit is perfect for TODAY specifically — mention the weather, occasion, and recency
+- Be specific about Indian cities, weather, and culture
+- Give the outfit a fun, relatable Indian name
+- Return ONLY valid JSON, no markdown`;
+
+  const wardrobeSummary = buildWardrobeSummary(wardrobe);
+  const userMessage = JSON.stringify({
+    wardrobe: wardrobeSummary,
+    profile,
+    weather,
+    recent_items: recentItemIds,
+  });
+
+  return await callGroq(systemPrompt, userMessage);
+}
+
+export async function generateOccasionOutfits(wardrobe, profile, event) {
+  const { type, venue, time, formality, notes, date } = event;
+
+  const systemPrompt = `You are an elite Indian fashion stylist specializing in occasion-specific styling. Generate exactly 3 outfit options ranked by suitability for a specific event.
+
+INDIAN OCCASION DRESS CODE KNOWLEDGE:
+- Wedding Reception: Ethnic formal or Indo-Western. Men: sherwani/kurta-pyjama/bandhgala. Women: saree/lehenga/anarkali
+- Sangeet: Festive, colorful. Sequins and shimmer welcome. Indo-Western fusion works well
+- Haldi: Yellow and warm tones are traditional. Keep it washable — turmeric stains!
+- Mehendi: Green tones, flowy ethnic, comfortable (long ceremony). Avoid white
+- Engagement: Semi-formal to formal. Understated elegance over flashy
+- Diwali Party: Festive ethnic. Rich fabrics — silk, brocade, velvet. Gold/jewel tones
+- Navratri Garba: Bright colors, flowy fabrics that allow dancing. Traditional chaniya choli / colorful kurtas
+- Eid Celebration: Elegant ethnic. White, pastels, or rich jewel tones. New clothes preferred
+- Office Presentation: Smart formal. Clean lines, solid colors, well-fitted. Blazer recommended
+- Client Meeting: Business formal. Conservative but stylish. No loud patterns
+- Office Party: Smart casual with personality. Dressier than daily office wear
+- First Date: Put-together but not trying too hard. Show personality. Fragrance is key
+- Anniversary Dinner: Elevated, romantic. Rich colors. Dress up a notch from everyday
+- House Party: Smart casual. Comfortable but curated. No gym wear
+- Temple Visit: Modest, traditional. Ethnic preferred. Covered shoulders and knees
+- Family Gathering: Clean ethnic casual. Comfortable but respectful
+- College Farewell: Trendy, memorable outfit. Dress to impress. Indo-Western welcome
+- Job Interview: Conservative, clean, well-fitted. Solid colors. Minimal accessories
+- Festival/Puja: Traditional ethnic. Bright, auspicious colors. Clean and new if possible
+- Travel: Comfortable, breathable, wrinkle-resistant. Layers for AC. Easy to move in
+- Brunch: Smart casual. Light colors, relaxed fit. Sunday vibes
+
+EVENT DETAILS:
+- Type: ${type}
+- Venue: ${venue || 'not specified'}
+- Time: ${time || 'not specified'}
+- Formality: ${formality || 'not specified'}
+- Special notes: ${notes || 'none'}
+${date ? `- Date: ${date}` : ''}
+
+RULES:
+- Use ONLY items from the provided wardrobe (reference by exact item ID)
+- Generate exactly 3 outfits, ranked from BEST to 3rd best
+- Each outfit needs: top/ethnic_top + bottom/ethnic_bottom + footwear (OR ethnic_set + footwear)
+- Match the dress code of the occasion type listed above
+- Consider venue (outdoor needs different shoes than indoor), time (evening = dressier), and user notes
+
+Return a JSON array of exactly 3 outfit objects:
+[
+  {
+    "rank": 1,
+    "outfit_name": "The Showstopper",
+    "vibe": "festive_glam",
+    "occasion": "${type}",
+    "items": {
+      "top": { "item_id": "xxx", "name": "silk kurta" },
+      "bottom": { "item_id": "xxx", "name": "churidar" },
+      "footwear": { "item_id": "xxx", "name": "juttis" },
+      "outerwear": null,
+      "accessories": []
+    },
+    "color_palette": ["maroon", "gold"],
+    "styling_instructions": "Pair the maroon silk kurta with the gold churidar. Roll the sleeves to show the cuff detailing. Add the ethnic stole draped over one shoulder for a regal touch.",
+    "what_to_avoid": "Avoid sneakers or casual footwear — this is a dressy event. Skip the graphic tee underlayer.",
+    "style_tip": "A watch and subtle cologne will complete this look perfectly.",
+    "best_for": "${type}",
+    "weather_note": "If it's an outdoor venue, the silk will breathe well in evening weather.",
+    "completeness_score": 95,
+    "missing_piece": null
+  }
+]
+
+COMPLETENESS SCORING:
+- 100: Perfect outfit, nothing missing
+- 80-99: Great outfit, could add one accessory or swap one piece
+- 60-79: Decent outfit but missing a key element — specify what to buy in "missing_piece"
+- Below 60: Don't include this outfit, wardrobe doesn't support this occasion well
+
+If completeness < 80, add "missing_piece":
+{
+  "item_type": "ethnic stole",
+  "why": "Would add the finishing touch for a wedding reception",
+  "search_query": "silk ethnic stole men wedding",
+  "estimated_price": "₹800-2000"
+}
+
+IMPORTANT:
+- "styling_instructions" should be DETAILED and actionable — how to wear each piece, tuck/untuck, sleeve position, layering order
+- "what_to_avoid" should be specific to THIS event type
+- Give creative outfit names that feel premium
+- Be honest about completeness — don't force outfits if the wardrobe doesn't support the occasion
+- Return ONLY valid JSON array, no markdown`;
+
+  const wardrobeSummary = buildWardrobeSummary(wardrobe);
+  const userMessage = JSON.stringify({
+    wardrobe: wardrobeSummary,
+    profile,
+    event: { type, venue, time, formality, notes, date },
+  });
+
+  return await callGroq(systemPrompt, userMessage);
+}
+
 export async function generateRecommendations(wardrobe, profile) {
   const systemPrompt = `You are a fashion consultant specializing in the Indian market, analyzing a wardrobe for gaps.
 

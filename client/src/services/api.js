@@ -70,6 +70,50 @@ export async function generateRecommendations(wardrobe, profile) {
   }
 }
 
+export async function getTodayPick(wardrobe, profile, weather, wearHistory = [], rejectedPicks = []) {
+  try {
+    const response = await fetch(`${API_BASE}/today-pick`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ wardrobe, profile, weather, wearHistory, rejectedPicks }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `Today's pick failed with status ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    if (error instanceof TypeError && error.message === 'Failed to fetch') {
+      throw new Error('Unable to reach the server. Please check your connection.');
+    }
+    throw error;
+  }
+}
+
+export async function getOccasionOutfits(wardrobe, profile, event) {
+  try {
+    const response = await fetch(`${API_BASE}/occasion-stylist`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ wardrobe, profile, event }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `Occasion styling failed with status ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    if (error instanceof TypeError && error.message === 'Failed to fetch') {
+      throw new Error('Unable to reach the server. Please check your connection.');
+    }
+    throw error;
+  }
+}
+
 export async function getWeather(city) {
   try {
     const response = await fetch(

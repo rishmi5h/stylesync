@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { getProfile, saveProfile } from '../utils/storage';
 
 const styleOptions = [
@@ -29,18 +29,19 @@ const occasionOptions = [
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 const budgetOptions = [
-  { value: 'budget', label: 'Budget', desc: 'Best value picks' },
-  { value: 'mid-range', label: 'Mid-Range', desc: 'Quality & value balance' },
-  { value: 'premium', label: 'Premium', desc: 'Top-tier brands' },
+  { value: 'budget', label: 'Budget' },
+  { value: 'mid-range', label: 'Mid-Range' },
+  { value: 'premium', label: 'Premium' },
 ];
 
 export default function StyleProfile() {
   const [saved, setSaved] = useState(false);
+  const [showSchedule, setShowSchedule] = useState(false);
   const [profile, setProfile] = useState(() => {
     const existing = getProfile();
     return existing || {
       styles: [],
-      schedule: days.reduce((acc, day) => ({ ...acc, [day]: 'casual' }), {}),
+      schedule: days.reduce((acc, day) => ({ ...acc, [day.toLowerCase()]: 'casual' }), {}),
       gender: '',
       location: '',
       budget: 'mid-range',
@@ -60,7 +61,7 @@ export default function StyleProfile() {
   const updateSchedule = (day, occasion) => {
     setProfile((prev) => ({
       ...prev,
-      schedule: { ...prev.schedule, [day]: occasion },
+      schedule: { ...prev.schedule, [day.toLowerCase()]: occasion },
     }));
     setSaved(false);
   };
@@ -75,21 +76,21 @@ export default function StyleProfile() {
 
   return (
     <div>
-      <div className="mb-8">
+      <div className="mb-6">
         <h2 className="text-2xl font-bold">Style Profile</h2>
-        <p className="text-text-muted text-sm mt-1">Tell us about your style so we can plan better outfits</p>
+        <p className="text-text-muted text-sm mt-1">Your preferences for better outfit picks</p>
       </div>
 
       <div className="space-y-8 max-w-2xl">
         {/* Style Preferences */}
         <section>
-          <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">Style Preferences</h3>
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Your Style</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {styleOptions.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => toggleStyle(opt.value)}
-                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 border ${
+                className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border ${
                   profile.styles.includes(opt.value)
                     ? 'border-primary bg-primary/15 text-primary'
                     : 'border-surface-lighter bg-surface-light text-text-muted hover:border-primary/30 hover:text-text'
@@ -103,19 +104,23 @@ export default function StyleProfile() {
 
         {/* Gender */}
         <section>
-          <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">Gender</h3>
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Gender</h3>
           <div className="flex gap-2">
-            {['male', 'female', 'non-binary'].map((g) => (
+            {[
+              { value: 'male', label: 'Male' },
+              { value: 'female', label: 'Female' },
+              { value: 'non-binary', label: 'Non-Binary' },
+            ].map((g) => (
               <button
-                key={g}
-                onClick={() => { setProfile({ ...profile, gender: g }); setSaved(false); }}
+                key={g.value}
+                onClick={() => { setProfile({ ...profile, gender: g.value }); setSaved(false); }}
                 className={`px-5 py-2.5 rounded-xl text-sm font-medium capitalize transition-all border ${
-                  profile.gender === g
+                  profile.gender === g.value
                     ? 'border-primary bg-primary/15 text-primary'
                     : 'border-surface-lighter bg-surface-light text-text-muted hover:border-primary/30'
                 }`}
               >
-                {g.replace('-', ' ')}
+                {g.label}
               </button>
             ))}
           </div>
@@ -123,32 +128,31 @@ export default function StyleProfile() {
 
         {/* Location */}
         <section>
-          <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">Location</h3>
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Location</h3>
           <input
             type="text"
             value={profile.location}
             onChange={(e) => { setProfile({ ...profile, location: e.target.value }); setSaved(false); }}
-            placeholder="Enter your city (e.g., Mumbai, Delhi, Bangalore)"
+            placeholder="e.g., Mumbai, Delhi, Bangalore"
             className="w-full px-4 py-3 rounded-xl bg-surface-light border border-surface-lighter text-sm focus:outline-none focus:border-primary transition-colors placeholder:text-text-muted/50"
           />
         </section>
 
         {/* Budget */}
         <section>
-          <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">Budget Preference</h3>
-          <div className="grid grid-cols-3 gap-2">
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Budget</h3>
+          <div className="flex gap-2">
             {budgetOptions.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => { setProfile({ ...profile, budget: opt.value }); setSaved(false); }}
-                className={`px-4 py-3 rounded-xl text-center transition-all border ${
+                className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all border ${
                   profile.budget === opt.value
                     ? 'border-primary bg-primary/15 text-primary'
                     : 'border-surface-lighter bg-surface-light text-text-muted hover:border-primary/30'
                 }`}
               >
-                <span className="block text-sm font-medium">{opt.label}</span>
-                <span className="block text-[10px] mt-0.5 opacity-70">{opt.desc}</span>
+                {opt.label}
               </button>
             ))}
           </div>
@@ -156,33 +160,44 @@ export default function StyleProfile() {
 
         {/* Weekly Schedule */}
         <section>
-          <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">Typical Week</h3>
-          <div className="space-y-2">
-            {days.map((day) => (
-              <div key={day} className="flex items-center gap-3 p-3 rounded-xl bg-surface-light border border-surface-lighter">
-                <span className="text-sm font-medium w-24 shrink-0">{day}</span>
-                <div className="flex flex-wrap gap-1.5 flex-1">
-                  {occasionOptions.map((occ) => (
-                    <button
-                      key={occ.value}
-                      onClick={() => updateSchedule(day, occ.value)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
-                        profile.schedule[day] === occ.value
-                          ? 'bg-primary text-white'
-                          : 'bg-surface-lighter text-text-muted hover:text-text'
-                      }`}
-                    >
-                      {occ.label}
-                    </button>
-                  ))}
+          <button
+            onClick={() => setShowSchedule(!showSchedule)}
+            className="flex items-center gap-2 text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 hover:text-text transition-colors"
+          >
+            <svg className={`w-4 h-4 transition-transform ${showSchedule ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+            Weekly Schedule
+            <span className="text-[10px] font-normal normal-case tracking-normal text-text-muted/60">(optional)</span>
+          </button>
+          {showSchedule && (
+            <div className="space-y-2 animate-in">
+              {days.map((day) => (
+                <div key={day} className="flex items-center gap-3 p-3 rounded-xl bg-surface-light border border-surface-lighter">
+                  <span className="text-sm font-medium w-24 shrink-0">{day}</span>
+                  <div className="flex flex-wrap gap-1.5 flex-1">
+                    {occasionOptions.map((occ) => (
+                      <button
+                        key={occ.value}
+                        onClick={() => updateSchedule(day, occ.value)}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                          profile.schedule[day.toLowerCase()] === occ.value
+                            ? 'bg-primary text-white'
+                            : 'bg-surface-lighter text-text-muted hover:text-text'
+                        }`}
+                      >
+                        {occ.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Save Button */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 pb-8">
           <button
             onClick={handleSave}
             disabled={!isComplete}
@@ -196,12 +211,12 @@ export default function StyleProfile() {
           </button>
           {saved && (
             <span className="text-success text-sm font-medium animate-pulse">
-              Profile saved!
+              Saved!
             </span>
           )}
           {!isComplete && (
             <span className="text-text-muted text-xs">
-              Select at least one style, gender, and enter your location
+              Select style, gender & location
             </span>
           )}
         </div>

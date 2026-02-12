@@ -1,0 +1,258 @@
+import { useState, useEffect } from 'react';
+import { getWardrobe, getProfile, getWearHistory, getTodayPick, saveTodayPick, addWearEntry } from '../utils/storage';
+import { getTodayPick as fetchTodayPick, getWeather } from '../services/api';
+import OutfitCard from './OutfitCard';
+
+const loadingMessages = [
+  'Checking the weather...',
+  'Scanning your wardrobe...',
+  'AI stylist is thinking...',
+  'Picking the perfect outfit...',
+  'Matching colors & vibes...',
+  'Almost ready...',
+];
+
+export default function TodayPick({ onNavigate }) {
+  const [outfit, setOutfit] = useState(null);
+  const [reasoning, setReasoning] = useState('');
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [loadingMsg, setLoadingMsg] = useState(loadingMessages[0]);
+  const [error, setError] = useState('');
+  const [worn, setWorn] = useState(false);
+  const [rejectedPicks, setRejectedPicks] = useState([]);
+
+  const wardrobe = getWardrobe();
+  const profile = getProfile();
+  const today = new Date();
+  const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
+  const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const todayOccasion = profile?.schedule?.[dayName.toLowerCase()] || 'casual';
+
+  const hasProfile = !!profile;
+  const hasWardrobe = wardrobe.length >= 3;
+  const isReady = hasProfile && hasWardrobe;
+
+  // Rotate loading messages
+  useEffect(() => {
+    if (!loading) return;
+    let idx = 0;
+    const interval = setInterval(() => {
+      idx = (idx + 1) % loadingMessages.length;
+      setLoadingMsg(loadingMessages[idx]);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [loading]);
+
+  // Check for cached pick on mount
+  useEffect(() => {
+    const cached = getTodayPick();
+    if (cached?.outfit) {
+      setOutfit(cached.outfit);
+      setReasoning(cached.outfit.reasoning || '');
+    }
+  }, []);
+
+  const fetchWeatherData = async () => {
+    if (!profile?.location) return null;
+    try {
+      const data = await getWeather(profile.location);
+      if (data.success && data.forecast?.length > 0) {
+        return data.forecast[0]; // Today's forecast
+      }
+    } catch {
+      // Weather is optional
+    }
+    return null;
+  };
+
+  const generatePick = async (rejected = []) => {
+    setLoading(true);
+    setError('');
+    setWorn(false);
+
+    try {
+      const weatherData = await fetchWeatherData();
+      setWeather(weatherData);
+
+      const wearHistory = getWearHistory();
+      const result = await fetchTodayPick(wardrobe, profile, weatherData, wearHistory, rejected);
+
+      if (result.success && result.outfit) {
+        setOutfit(result.outfit);
+        setReasoning(result.outfit.reasoning || '');
+        saveTodayPick(result.outfit);
+      } else {
+        throw new Error('Could not generate a pick');
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    const newRejected = outfit ? [...rejectedPicks, outfit] : rejectedPicks;
+    setRejectedPicks(newRejected);
+    generatePick(newRejected);
+  };
+
+  const handleWoreIt = () => {
+    if (!outfit) return;
+    const itemIds = [];
+    const items = outfit.items || {};
+    if (items.top) itemIds.push(items.top.item_id);
+    if (items.bottom) itemIds.push(items.bottom.item_id);
+    if (items.footwear) itemIds.push(items.footwear.item_id);
+    if (items.outerwear) itemIds.push(items.outerwear.item_id);
+    if (items.accessories) items.accessories.forEach((a) => itemIds.push(a.item_id));
+
+    addWearEntry(itemIds.filter(Boolean), outfit.outfit_name);
+    setWorn(true);
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      {/* Header */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold">Today's Pick</h2>
+        <p className="text-sm text-text-muted mt-1">{dayName}, {dateStr}</p>
+
+        {/* Context badges */}
+        <div className="flex flex-wrap gap-2 mt-3">
+          <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary capitalize">
+            {todayOccasion.replace(/_/g, ' ')}
+          </span>
+          {weather && (
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
+              {weather.temp_min}°C - {weather.temp_max}°C
+            </span>
+          )}
+          {profile?.location && (
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-success/10 text-success">
+              {profile.location}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Setup hints — compact, single line */}
+      {!isReady && !outfit && !loading && (
+        <div className="mb-6 space-y-2">
+          {!hasProfile && (
+            <div className="flex items-center justify-between p-3 rounded-xl bg-primary/5 border border-primary/10">
+              <p className="text-sm text-text-muted">Complete your profile for personalized picks</p>
+              <button
+                onClick={() => onNavigate('profile')}
+                className="shrink-0 px-3 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-medium transition-colors"
+              >
+                Set Up
+              </button>
+            </div>
+          )}
+          {!hasWardrobe && (
+            <div className="flex items-center justify-between p-3 rounded-xl bg-accent/5 border border-accent/10">
+              <p className="text-sm text-text-muted">Add {3 - wardrobe.length} more item{3 - wardrobe.length !== 1 ? 's' : ''} to get picks</p>
+              <button
+                onClick={() => onNavigate('wardrobe')}
+                className="shrink-0 px-3 py-1.5 rounded-lg bg-accent/10 hover:bg-accent/20 text-accent text-xs font-medium transition-colors"
+              >
+                Add
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Generate button (when no outfit yet) */}
+      {!outfit && !loading && (
+        <div className="text-center py-12">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mx-auto mb-5 border border-primary/10">
+            <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold mb-2">Ready for your daily outfit?</h3>
+          <p className="text-sm text-text-muted mb-6 max-w-sm mx-auto">
+            {isReady
+              ? "Weather, schedule & wear history — all factored in."
+              : "Complete setup above to unlock daily picks."
+            }
+          </p>
+          <button
+            onClick={() => generatePick([])}
+            disabled={!isReady}
+            className={`px-8 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+              isReady
+                ? 'bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white shadow-lg shadow-primary/20 hover:shadow-primary/30'
+                : 'bg-surface-lighter text-text-muted cursor-not-allowed'
+            }`}
+          >
+            {isReady ? "Get Today's Pick" : "Complete Setup First"}
+          </button>
+        </div>
+      )}
+
+      {/* Loading state */}
+      {loading && (
+        <div className="text-center py-16">
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 animate-pulse">
+            <svg className="w-7 h-7 text-primary animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+          </div>
+          <p className="text-sm text-text-muted animate-pulse">{loadingMsg}</p>
+        </div>
+      )}
+
+      {/* Error state */}
+      {error && (
+        <div className="mb-6 p-4 rounded-xl bg-danger/10 border border-danger/20">
+          <p className="text-sm text-danger">{error}</p>
+          <button onClick={() => generatePick(rejectedPicks)} className="mt-2 text-xs text-danger/80 hover:text-danger underline">
+            Try again
+          </button>
+        </div>
+      )}
+
+      {/* Outfit display */}
+      {outfit && !loading && (
+        <div className="space-y-4">
+          {/* AI Reasoning */}
+          {reasoning && (
+            <div className="p-3.5 rounded-xl bg-primary/5 border border-primary/10">
+              <p className="text-xs font-medium text-primary mb-1">AI Stylist</p>
+              <p className="text-sm text-text-muted leading-relaxed">{reasoning}</p>
+            </div>
+          )}
+
+          {/* The outfit card */}
+          <OutfitCard outfit={outfit} />
+
+          {/* Action buttons */}
+          <div className="flex gap-3">
+            <button
+              onClick={handleWoreIt}
+              disabled={worn}
+              className={`flex-1 py-3 rounded-xl text-sm font-medium transition-all ${
+                worn
+                  ? 'bg-success/15 text-success cursor-default'
+                  : 'bg-success/10 hover:bg-success/20 text-success border border-success/20'
+              }`}
+            >
+              {worn ? 'Logged!' : 'I wore this'}
+            </button>
+            <button
+              onClick={handleRefresh}
+              className="flex-1 py-3 rounded-xl text-sm font-medium bg-surface-lighter hover:bg-surface-lighter/80 text-text-muted transition-colors"
+            >
+              Not feeling it
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

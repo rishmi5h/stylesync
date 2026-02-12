@@ -15,6 +15,8 @@ const { default: classifyRouter } = await import('./routes/classify.js');
 const { default: outfitsRouter } = await import('./routes/outfits.js');
 const { default: recommendRouter } = await import('./routes/recommend.js');
 const { default: weatherRouter } = await import('./routes/weather.js');
+const { default: todayPickRouter } = await import('./routes/todayPick.js');
+const { default: occasionStylistRouter } = await import('./routes/occasionStylist.js');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -49,6 +51,8 @@ app.use('/api/classify', classifyRouter);
 app.use('/api/outfits', outfitsRouter);
 app.use('/api/recommend', recommendRouter);
 app.use('/api/weather', weatherRouter);
+app.use('/api/today-pick', todayPickRouter);
+app.use('/api/occasion-stylist', occasionStylistRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
