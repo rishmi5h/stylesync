@@ -14,34 +14,6 @@ const vibeStyles = {
   festive_glam: { bg: 'bg-rose-500/15', text: 'text-rose-400', label: 'Festive' },
 };
 
-function ItemThumb({ itemData, wardrobe, size = 'default' }) {
-  const item = wardrobe.find((w) => w.id === itemData?.item_id) || null;
-  if (!itemData) return null;
-
-  const sizeClass = size === 'hero'
-    ? 'w-28 h-36 sm:w-32 sm:h-40'
-    : 'w-20 h-24 sm:w-22 sm:h-28';
-
-  return (
-    <div className="flex flex-col items-center gap-1.5 shrink-0">
-      {item?.image ? (
-        <img
-          src={item.image}
-          alt={itemData.name}
-          className={`${sizeClass} rounded-xl object-cover border border-white/5 shadow-lg shadow-black/20`}
-        />
-      ) : (
-        <div className={`${sizeClass} rounded-xl bg-surface-lighter flex items-center justify-center border border-white/5`}>
-          <span className="text-xs text-text-muted text-center px-2 leading-tight">{itemData.name || '?'}</span>
-        </div>
-      )}
-      <span className="text-[11px] text-text-muted text-center leading-tight max-w-20 sm:max-w-22 line-clamp-1 font-medium">
-        {itemData.name}
-      </span>
-    </div>
-  );
-}
-
 function getAllItems(outfit) {
   const items = [];
   if (outfit.items?.top) items.push({ key: 'top', data: outfit.items.top });
@@ -54,6 +26,30 @@ function getAllItems(outfit) {
   return items;
 }
 
+function ItemTile({ itemData, wardrobe }) {
+  const item = wardrobe.find((w) => w.id === itemData?.item_id) || null;
+  if (!itemData) return null;
+
+  return (
+    <div className="flex flex-col items-center gap-1 min-w-0 flex-1">
+      {item?.image ? (
+        <img
+          src={item.image}
+          alt={itemData.name}
+          className="w-full aspect-[3/4] rounded-xl object-cover"
+        />
+      ) : (
+        <div className="w-full aspect-[3/4] rounded-xl bg-surface-lighter flex items-center justify-center">
+          <span className="text-xs text-text-muted text-center px-2 leading-tight">{itemData.name || '?'}</span>
+        </div>
+      )}
+      <span className="text-[11px] text-text-muted text-center leading-tight line-clamp-1 w-full px-0.5">
+        {itemData.name}
+      </span>
+    </div>
+  );
+}
+
 export default function OutfitCard({ outfit, reasoning }) {
   const [expanded, setExpanded] = useState(false);
   const wardrobe = getWardrobe();
@@ -63,32 +59,33 @@ export default function OutfitCard({ outfit, reasoning }) {
 
   return (
     <div className="bg-surface-light rounded-2xl border border-surface-lighter overflow-hidden hover:border-primary/20 transition-all">
-      {/* Title bar — minimal */}
-      <div className="flex items-center justify-between px-4 pt-3 pb-2">
-        <h3 className="font-bold text-base leading-snug truncate">{outfit.outfit_name || 'Outfit'}</h3>
-        <span className={`shrink-0 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide ${vibe.bg} ${vibe.text}`}>
+      {/* Title + vibe inline */}
+      <div className="flex items-center justify-between gap-2 px-3 py-2.5">
+        <h3 className="font-bold text-sm leading-snug truncate">{outfit.outfit_name || 'Outfit'}</h3>
+        <span className={`shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${vibe.bg} ${vibe.text}`}>
           {vibe.label}
         </span>
       </div>
 
-      {/* Items — horizontal scroll */}
-      <div className="px-4 py-3">
-        <div className="flex gap-3 overflow-x-auto scrollbar-none pb-1">
-          {allItems.map((item, idx) => (
-            <ItemThumb
-              key={item.key}
-              itemData={item.data}
-              wardrobe={wardrobe}
-              size={allItems.length === 1 ? 'hero' : 'default'}
-            />
+      {/* Items grid — fills full width */}
+      <div className="px-3 pb-2">
+        <div className={`grid gap-2 ${
+          allItems.length === 1 ? 'grid-cols-1 max-w-[200px]' :
+          allItems.length === 2 ? 'grid-cols-2' :
+          allItems.length === 3 ? 'grid-cols-3' :
+          allItems.length === 4 ? 'grid-cols-4' :
+          'grid-cols-4 sm:grid-cols-5'
+        }`}>
+          {allItems.map((item) => (
+            <ItemTile key={item.key} itemData={item.data} wardrobe={wardrobe} />
           ))}
         </div>
       </div>
 
-      {/* Note — subtle bottom bar */}
+      {/* Note */}
       {note && (
         <div
-          className="px-4 py-2.5 bg-white/[0.02] border-t border-white/5 cursor-pointer"
+          className="px-3 py-2 border-t border-white/5 cursor-pointer"
           onClick={() => setExpanded(!expanded)}
         >
           <p className={`text-xs text-text-muted leading-relaxed ${!expanded ? 'line-clamp-1' : ''}`}>
