@@ -35,20 +35,13 @@ function ItemThumb({ itemData, wardrobe }) {
   );
 }
 
-/* Truncated text that expands on click */
-function Clamp({ text, label, labelClass = 'text-primary-light' }) {
-  const [open, setOpen] = useState(false);
-  if (!text) return null;
-  return (
-    <p className={`text-xs text-text-muted leading-snug cursor-pointer ${!open ? 'line-clamp-1' : ''}`} onClick={() => setOpen(!open)}>
-      <span className={`font-medium ${labelClass}`}>{label} </span>{text}
-    </p>
-  );
-}
-
 export default function OutfitCard({ outfit, reasoning }) {
+  const [expanded, setExpanded] = useState(false);
   const wardrobe = getWardrobe();
   const vibe = vibeStyles[outfit.vibe] || vibeStyles.casual_chill;
+
+  // Pick ONE best note to show — priority: tip > reasoning > best_for
+  const note = outfit.style_tip || reasoning || outfit.best_for || '';
 
   return (
     <div className="bg-surface-light rounded-xl border border-surface-lighter overflow-hidden hover:border-primary/20 transition-all group">
@@ -82,13 +75,15 @@ export default function OutfitCard({ outfit, reasoning }) {
         </div>
       </div>
 
-      {/* Footer — all clamped to 1 line, tap to expand */}
-      {(reasoning || outfit.style_tip || outfit.best_for || outfit.weather_note) && (
-        <div className="px-3 pb-3 space-y-0.5">
-          <Clamp text={reasoning} label="AI:" labelClass="text-primary" />
-          <Clamp text={outfit.style_tip} label="Tip:" />
-          <Clamp text={outfit.best_for} label="For:" labelClass="text-text" />
-          <Clamp text={outfit.weather_note} label="Weather:" labelClass="text-amber-400/80" />
+      {/* Single note line — tap to expand */}
+      {note && (
+        <div className="px-3 pb-3">
+          <p
+            className={`text-xs text-text-muted leading-snug cursor-pointer ${!expanded ? 'line-clamp-1' : ''}`}
+            onClick={() => setExpanded(!expanded)}
+          >
+            {note}
+          </p>
         </div>
       )}
     </div>
