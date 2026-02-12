@@ -109,11 +109,11 @@ export default function TodayPick({ onNavigate }) {
           <p className="text-xs text-text-muted mt-0.5">{dayName}, {dateStr}</p>
         </div>
         <div className="flex flex-wrap gap-1.5 justify-end">
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-primary/10 text-primary capitalize">
+          <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary capitalize">
             {todayOccasion.replace(/_/g, ' ')}
           </span>
           {weather && (
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-accent/10 text-accent">
+            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent">
               {weather.temp_min}–{weather.temp_max}°C
             </span>
           )}
@@ -185,7 +185,7 @@ export default function TodayPick({ onNavigate }) {
             <button
               onClick={handleWoreIt}
               disabled={worn}
-              className={`flex-1 py-2.5 rounded-xl text-xs font-medium transition-all ${
+              className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 worn ? 'bg-success/15 text-success' : 'bg-success/10 hover:bg-success/20 text-success border border-success/20'
               }`}
             >
@@ -193,7 +193,7 @@ export default function TodayPick({ onNavigate }) {
             </button>
             <button
               onClick={handleRefresh}
-              className="flex-1 py-2.5 rounded-xl text-xs font-medium bg-surface-lighter hover:bg-surface-lighter/80 text-text-muted"
+              className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-surface-lighter hover:bg-surface-lighter/80 text-text-muted"
             >
               Skip
             </button>

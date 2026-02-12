@@ -160,7 +160,7 @@ export default function OccasionStylist({ onNavigate }) {
             </div>
 
             {!showMore ? (
-              <button onClick={() => setShowMore(true)} className="mt-2 text-[10px] text-primary hover:text-primary-light font-medium">
+              <button onClick={() => setShowMore(true)} className="mt-2 text-xs text-primary hover:text-primary-light font-medium">
                 + {MORE_EVENTS.length} more
               </button>
             ) : (
@@ -188,7 +188,7 @@ export default function OccasionStylist({ onNavigate }) {
             <div>
               <button
                 onClick={() => setShowDetails(!showDetails)}
-                className="flex items-center gap-1.5 text-[10px] font-medium text-text-muted hover:text-text transition-colors mb-2"
+                className="flex items-center gap-1.5 text-xs font-medium text-text-muted hover:text-text transition-colors mb-2"
               >
                 <svg className={`w-3 h-3 transition-transform ${showDetails ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -200,7 +200,7 @@ export default function OccasionStylist({ onNavigate }) {
                 <div className="space-y-3 animate-in">
                   <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <label className="block text-[10px] font-medium text-text-muted mb-1">Venue</label>
+                      <label className="block text-xs font-medium text-text-muted mb-1">Venue</label>
                       <select value={event.venue} onChange={(e) => setEvent({ ...event, venue: e.target.value })}
                         className="w-full bg-surface-light border border-surface-lighter rounded-lg px-2 py-2 text-xs text-text focus:outline-none focus:border-primary/50">
                         <option value="">Any</option>
@@ -208,7 +208,7 @@ export default function OccasionStylist({ onNavigate }) {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-text-muted mb-1">Time</label>
+                      <label className="block text-xs font-medium text-text-muted mb-1">Time</label>
                       <select value={event.time} onChange={(e) => setEvent({ ...event, time: e.target.value })}
                         className="w-full bg-surface-light border border-surface-lighter rounded-lg px-2 py-2 text-xs text-text focus:outline-none focus:border-primary/50">
                         <option value="">Any</option>
@@ -216,7 +216,7 @@ export default function OccasionStylist({ onNavigate }) {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-medium text-text-muted mb-1">Formality</label>
+                      <label className="block text-xs font-medium text-text-muted mb-1">Formality</label>
                       <select value={event.formality} onChange={(e) => setEvent({ ...event, formality: e.target.value })}
                         className="w-full bg-surface-light border border-surface-lighter rounded-lg px-2 py-2 text-xs text-text focus:outline-none focus:border-primary/50">
                         <option value="">Any</option>
@@ -238,7 +238,7 @@ export default function OccasionStylist({ onNavigate }) {
             <button
               onClick={handleGenerate}
               disabled={loading || !isReady}
-              className={`w-full py-2.5 rounded-xl text-xs font-semibold transition-all ${
+              className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-all ${
                 isReady
                   ? 'bg-primary hover:bg-primary-dark text-white'
                   : 'bg-surface-lighter text-text-muted cursor-not-allowed'
@@ -273,11 +273,11 @@ export default function OccasionStylist({ onNavigate }) {
             <div className="flex items-center gap-1.5">
               <span className="text-base">{selectedEvent?.emoji}</span>
               <span className="text-xs font-semibold">{selectedEvent?.label}</span>
-              <span className="text-[10px] text-text-muted ml-1">
+              <span className="text-xs text-text-muted ml-1">
                 {[event.venue, event.time, event.formality].filter(Boolean).join(' · ')}
               </span>
             </div>
-            <button onClick={handleReset} className="px-3 py-1.5 rounded-lg text-[10px] font-medium bg-surface-lighter hover:bg-surface-lighter/80 text-text-muted">
+            <button onClick={handleReset} className="px-3 py-1.5 rounded-lg text-xs font-medium bg-surface-lighter hover:bg-surface-lighter/80 text-text-muted">
               New
             </button>
           </div>
@@ -287,7 +287,7 @@ export default function OccasionStylist({ onNavigate }) {
             <div key={idx} className="space-y-2">
               {/* Rank + score inline */}
               <div className="flex items-center gap-1.5">
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                   idx === 0 ? 'bg-amber-500/15 text-amber-400' :
                   idx === 1 ? 'bg-slate-400/15 text-slate-400' :
                   'bg-orange-700/15 text-orange-400'
@@ -295,7 +295,7 @@ export default function OccasionStylist({ onNavigate }) {
                   #{idx + 1}
                 </span>
                 {outfit.completeness_score && (
-                  <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-medium ${
+                  <span className={`px-1.5 py-0.5 rounded-full text-[11px] font-medium ${
                     outfit.completeness_score >= 90 ? 'bg-success/15 text-success' :
                     outfit.completeness_score >= 70 ? 'bg-amber-500/15 text-amber-400' :
                     'bg-danger/15 text-danger'
@@ -310,7 +310,7 @@ export default function OccasionStylist({ onNavigate }) {
               {/* Missing piece — compact */}
               {outfit.missing_piece && (
                 <div className="flex items-center justify-between p-2 rounded-lg bg-accent/5 border border-accent/10">
-                  <p className="text-[10px] text-text-muted">
+                  <p className="text-xs text-text-muted">
                     <span className="text-accent font-medium">Need: </span>
                     <span className="capitalize">{outfit.missing_piece.item_type}</span>
                     {outfit.missing_piece.estimated_price && <span className="text-text-muted/60"> · {outfit.missing_piece.estimated_price}</span>}
@@ -318,7 +318,7 @@ export default function OccasionStylist({ onNavigate }) {
                   {outfit.missing_piece.search_query && (
                     <a href={`https://www.myntra.com/${outfit.missing_piece.search_query.replace(/\s+/g, '-')}`}
                       target="_blank" rel="noopener noreferrer"
-                      className="shrink-0 px-2 py-0.5 rounded text-[10px] bg-accent/10 hover:bg-accent/20 text-accent font-medium">Shop</a>
+                      className="shrink-0 px-2 py-0.5 rounded text-xs bg-accent/10 hover:bg-accent/20 text-accent font-medium">Shop</a>
                   )}
                 </div>
               )}

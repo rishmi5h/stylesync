@@ -84,11 +84,11 @@ export default function Recommendations({ onNavigate }) {
           {data.wardrobe_analysis && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="p-3 rounded-xl bg-surface-light border border-surface-lighter">
-                <p className="text-[10px] font-semibold text-success uppercase mb-1">Strengths</p>
+                <p className="text-xs font-semibold text-success uppercase mb-1">Strengths</p>
                 <p className="text-xs text-text-muted leading-relaxed">{data.wardrobe_analysis.strengths}</p>
               </div>
               <div className="p-3 rounded-xl bg-surface-light border border-surface-lighter">
-                <p className="text-[10px] font-semibold text-accent uppercase mb-1">Gaps</p>
+                <p className="text-xs font-semibold text-accent uppercase mb-1">Gaps</p>
                 <p className="text-xs text-text-muted leading-relaxed">{data.wardrobe_analysis.gaps}</p>
               </div>
             </div>
@@ -99,7 +99,7 @@ export default function Recommendations({ onNavigate }) {
             <div key={i} className="p-3 sm:p-4 rounded-xl bg-surface-light border border-surface-lighter">
               <div className="flex items-center justify-between gap-2 mb-2">
                 <h3 className="text-sm font-bold capitalize">{rec.item_type}</h3>
-                <span className="px-2 py-0.5 rounded-full text-[9px] font-medium bg-accent/20 text-accent">#{i + 1}</span>
+                <span className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-accent/20 text-accent">#{i + 1}</span>
               </div>
 
               {rec.why && (
@@ -124,7 +124,7 @@ export default function Recommendations({ onNavigate }) {
                     return item ? (
                       <ItemCard key={j} item={item} compact />
                     ) : (
-                      <span key={j} className="px-2 py-0.5 rounded bg-surface-lighter text-[10px] text-text-muted">{itemId}</span>
+                      <span key={j} className="px-2 py-0.5 rounded bg-surface-lighter text-xs text-text-muted">{itemId}</span>
                     );
                   })}
                 </div>
@@ -133,9 +133,9 @@ export default function Recommendations({ onNavigate }) {
               {rec.search_query && (
                 <div className="flex gap-2">
                   <a href={`https://www.myntra.com/${encodeURIComponent(rec.search_query)}`} target="_blank" rel="noopener noreferrer"
-                    className="flex-1 text-center py-1.5 rounded-lg bg-pink-500/10 text-pink-400 hover:bg-pink-500/20 text-[10px] font-medium">Myntra</a>
+                    className="flex-1 text-center py-1.5 rounded-lg bg-pink-500/10 text-pink-400 hover:bg-pink-500/20 text-xs font-medium">Myntra</a>
                   <a href={`https://www.amazon.in/s?k=${encodeURIComponent(rec.search_query)}`} target="_blank" rel="noopener noreferrer"
-                    className="flex-1 text-center py-1.5 rounded-lg bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 text-[10px] font-medium">Amazon</a>
+                    className="flex-1 text-center py-1.5 rounded-lg bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 text-xs font-medium">Amazon</a>
                 </div>
               )}
             </div>

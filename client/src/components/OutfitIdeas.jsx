@@ -104,7 +104,7 @@ export default function OutfitIdeas({ onNavigate }) {
         <button
           onClick={handleGenerate}
           disabled={loading || !isReady}
-          className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl font-medium text-xs transition-all ${
+          className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl font-medium text-sm transition-all ${
             isReady
               ? 'bg-primary hover:bg-primary-dark text-white'
               : 'bg-surface-lighter text-text-muted cursor-not-allowed'
@@ -136,33 +136,33 @@ export default function OutfitIdeas({ onNavigate }) {
       {/* Filters — horizontal scrollable on mobile */}
       <div className="mb-4 space-y-2">
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-semibold text-text-muted w-12 shrink-0">Occasion</span>
+          <span className="text-xs font-semibold text-text-muted w-12 shrink-0">Occasion</span>
           <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none">
             {occasionFilters.map((f) => (
               <button key={f.value} onClick={() => setFilters({ ...filters, occasion: f.value })}
-                className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                   filters.occasion === f.value ? 'bg-primary text-white' : 'bg-surface-light text-text-muted border border-surface-lighter'
                 }`}>{f.label}</button>
             ))}
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-semibold text-text-muted w-12 shrink-0">Season</span>
+          <span className="text-xs font-semibold text-text-muted w-12 shrink-0">Season</span>
           <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none">
             {seasonFilters.map((f) => (
               <button key={f.value} onClick={() => setFilters({ ...filters, season: f.value })}
-                className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                   filters.season === f.value ? 'bg-primary text-white' : 'bg-surface-light text-text-muted border border-surface-lighter'
                 }`}>{f.label}</button>
             ))}
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-semibold text-text-muted w-12 shrink-0">Mood</span>
+          <span className="text-xs font-semibold text-text-muted w-12 shrink-0">Mood</span>
           <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none">
             {moodFilters.map((f) => (
               <button key={f.value} onClick={() => setFilters({ ...filters, mood: f.value })}
-                className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                   filters.mood === f.value ? 'bg-primary text-white' : 'bg-surface-light text-text-muted border border-surface-lighter'
                 }`}>{f.label}</button>
             ))}
@@ -192,7 +192,7 @@ export default function OutfitIdeas({ onNavigate }) {
               if (v !== 'all' && count === 0) return null;
               return (
                 <button key={v} onClick={() => setActiveVibeFilter(v)}
-                  className={`px-2.5 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                     activeVibeFilter === v ? 'bg-accent text-black' : 'bg-surface-light text-text-muted border border-surface-lighter'
                   }`}>{vibeLabels[v]} ({count})</button>
               );

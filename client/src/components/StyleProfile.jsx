@@ -83,7 +83,7 @@ export default function StyleProfile() {
           <button
             onClick={handleSave}
             disabled={!isComplete}
-            className={`px-4 py-2 rounded-xl text-xs font-medium transition-all ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               isComplete
                 ? 'bg-primary hover:bg-primary-dark text-white'
                 : 'bg-surface-lighter text-text-muted cursor-not-allowed'
@@ -97,13 +97,13 @@ export default function StyleProfile() {
       <div className="space-y-5 max-w-2xl">
         {/* Style Preferences */}
         <section>
-          <h3 className="text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-2">Style</h3>
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Style</h3>
           <div className="flex flex-wrap gap-1.5">
             {styleOptions.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => toggleStyle(opt.value)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all border ${
                   profile.styles.includes(opt.value)
                     ? 'border-primary bg-primary/15 text-primary'
                     : 'border-surface-lighter bg-surface-light text-text-muted hover:border-primary/30'
@@ -117,7 +117,7 @@ export default function StyleProfile() {
 
         {/* Gender */}
         <section>
-          <h3 className="text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-2">Gender</h3>
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Gender</h3>
           <div className="flex flex-wrap gap-1.5">
             {[
               { value: 'male', label: 'Male' },
@@ -127,7 +127,7 @@ export default function StyleProfile() {
               <button
                 key={g.value}
                 onClick={() => { setProfile({ ...profile, gender: g.value }); setSaved(false); }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all border ${
                   profile.gender === g.value
                     ? 'border-primary bg-primary/15 text-primary'
                     : 'border-surface-lighter bg-surface-light text-text-muted hover:border-primary/30'
@@ -141,25 +141,25 @@ export default function StyleProfile() {
 
         {/* Location */}
         <section>
-          <h3 className="text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-2">Location</h3>
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Location</h3>
           <input
             type="text"
             value={profile.location}
             onChange={(e) => { setProfile({ ...profile, location: e.target.value }); setSaved(false); }}
             placeholder="Mumbai, Delhi, Bangalore..."
-            className="w-full px-3 py-2 rounded-lg bg-surface-light border border-surface-lighter text-xs focus:outline-none focus:border-primary transition-colors placeholder:text-text-muted/50"
+            className="w-full px-3 py-2.5 rounded-lg bg-surface-light border border-surface-lighter text-sm focus:outline-none focus:border-primary transition-colors placeholder:text-text-muted/50"
           />
         </section>
 
         {/* Budget */}
         <section>
-          <h3 className="text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-2">Budget</h3>
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Budget</h3>
           <div className="flex flex-wrap gap-1.5">
             {budgetOptions.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => { setProfile({ ...profile, budget: opt.value }); setSaved(false); }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all border ${
                   profile.budget === opt.value
                     ? 'border-primary bg-primary/15 text-primary'
                     : 'border-surface-lighter bg-surface-light text-text-muted hover:border-primary/30'
@@ -175,7 +175,7 @@ export default function StyleProfile() {
         <section>
           <button
             onClick={() => setShowSchedule(!showSchedule)}
-            className="flex items-center gap-1.5 text-[10px] font-semibold text-text-muted uppercase tracking-wider mb-2 hover:text-text transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-text-muted uppercase tracking-wider mb-2 hover:text-text transition-colors"
           >
             <svg className={`w-3 h-3 transition-transform ${showSchedule ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -187,13 +187,13 @@ export default function StyleProfile() {
             <div className="space-y-1.5 animate-in">
               {days.map((day) => (
                 <div key={day} className="flex items-center gap-2 p-2 rounded-lg bg-surface-light border border-surface-lighter">
-                  <span className="text-[10px] font-medium w-12 shrink-0">{day.slice(0, 3)}</span>
+                  <span className="text-xs font-medium w-12 shrink-0">{day.slice(0, 3)}</span>
                   <div className="flex gap-1 overflow-x-auto scrollbar-none flex-1 pb-0.5">
                     {occasionOptions.map((occ) => (
                       <button
                         key={occ.value}
                         onClick={() => updateSchedule(day, occ.value)}
-                        className={`px-2 py-0.5 rounded text-[10px] font-medium whitespace-nowrap transition-all ${
+                        className={`px-2 py-0.5 rounded text-xs font-medium whitespace-nowrap transition-all ${
                           profile.schedule[day.toLowerCase()] === occ.value
                             ? 'bg-primary text-white'
                             : 'bg-surface-lighter text-text-muted hover:text-text'
@@ -210,7 +210,7 @@ export default function StyleProfile() {
         </section>
 
         {!isComplete && (
-          <p className="text-text-muted text-[10px] pb-4">Select style, gender & location to save</p>
+          <p className="text-text-muted text-xs pb-4">Select style, gender & location to save</p>
         )}
       </div>
     </div>

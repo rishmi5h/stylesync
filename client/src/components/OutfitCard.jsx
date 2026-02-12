@@ -25,10 +25,10 @@ function ItemThumb({ itemData, wardrobe }) {
           className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg object-cover border border-surface-lighter" />
       ) : (
         <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-surface-lighter flex items-center justify-center border border-surface-lighter">
-          <span className="text-[9px] text-text-muted text-center px-1 leading-tight">{itemData.name || '?'}</span>
+          <span className="text-[11px] text-text-muted text-center px-1 leading-tight">{itemData.name || '?'}</span>
         </div>
       )}
-      <span className="text-[9px] text-text-muted text-center leading-tight max-w-14 sm:max-w-16 line-clamp-1">
+      <span className="text-[11px] text-text-muted text-center leading-tight max-w-14 sm:max-w-16 line-clamp-1">
         {itemData.name}
       </span>
     </div>
@@ -40,7 +40,7 @@ function Clamp({ text, label, labelClass = 'text-primary-light' }) {
   const [open, setOpen] = useState(false);
   if (!text) return null;
   return (
-    <p className={`text-[10px] text-text-muted leading-snug ${!open ? 'line-clamp-1' : ''}`} onClick={() => setOpen(!open)}>
+    <p className={`text-xs text-text-muted leading-snug cursor-pointer ${!open ? 'line-clamp-1' : ''}`} onClick={() => setOpen(!open)}>
       <span className={`font-medium ${labelClass}`}>{label} </span>{text}
     </p>
   );
@@ -55,15 +55,15 @@ export default function OutfitCard({ outfit, reasoning }) {
       {/* Header */}
       <div className="p-3 border-b border-surface-lighter">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="font-semibold text-xs leading-snug truncate">{outfit.outfit_name || 'Outfit'}</h3>
-          <span className={`shrink-0 px-2 py-0.5 rounded-full text-[9px] font-semibold ${vibe.bg} ${vibe.text}`}>
+          <h3 className="font-semibold text-sm leading-snug truncate">{outfit.outfit_name || 'Outfit'}</h3>
+          <span className={`shrink-0 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${vibe.bg} ${vibe.text}`}>
             {vibe.label}
           </span>
         </div>
         {outfit.color_palette && (
           <div className="flex items-center gap-1 mt-1.5 overflow-x-auto scrollbar-none">
             {outfit.color_palette.map((color, i) => (
-              <span key={i} className="px-1.5 py-0.5 rounded-full text-[8px] bg-surface-lighter capitalize whitespace-nowrap">{color}</span>
+              <span key={i} className="px-2 py-0.5 rounded-full text-[11px] bg-surface-lighter capitalize whitespace-nowrap">{color}</span>
             ))}
           </div>
         )}
@@ -84,7 +84,7 @@ export default function OutfitCard({ outfit, reasoning }) {
 
       {/* Footer — all clamped to 1 line, tap to expand */}
       {(reasoning || outfit.style_tip || outfit.best_for || outfit.weather_note) && (
-        <div className="px-3 pb-2.5 space-y-0.5">
+        <div className="px-3 pb-3 space-y-0.5">
           <Clamp text={reasoning} label="AI:" labelClass="text-primary" />
           <Clamp text={outfit.style_tip} label="Tip:" />
           <Clamp text={outfit.best_for} label="For:" labelClass="text-text" />
