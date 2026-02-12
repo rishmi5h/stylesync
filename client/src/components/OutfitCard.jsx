@@ -22,13 +22,13 @@ function ItemThumb({ itemData, wardrobe }) {
     <div className="flex flex-col items-center gap-1">
       {item?.image ? (
         <img src={item.image} alt={itemData.name}
-          className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg object-cover border border-surface-lighter" />
+          className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover border border-surface-lighter" />
       ) : (
-        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-surface-lighter flex items-center justify-center border border-surface-lighter">
-          <span className="text-[11px] text-text-muted text-center px-1 leading-tight">{itemData.name || '?'}</span>
+        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-surface-lighter flex items-center justify-center border border-surface-lighter">
+          <span className="text-xs text-text-muted text-center px-1 leading-tight">{itemData.name || '?'}</span>
         </div>
       )}
-      <span className="text-[11px] text-text-muted text-center leading-tight max-w-14 sm:max-w-16 line-clamp-1">
+      <span className="text-xs text-text-muted text-center leading-tight max-w-20 sm:max-w-24 line-clamp-1">
         {itemData.name}
       </span>
     </div>
