@@ -14,74 +14,84 @@ const vibeStyles = {
   festive_glam: { bg: 'bg-rose-500/15', text: 'text-rose-400', label: 'Festive' },
 };
 
-function ItemThumb({ itemData, wardrobe }) {
+function ItemThumb({ itemData, wardrobe, size = 'default' }) {
   const item = wardrobe.find((w) => w.id === itemData?.item_id) || null;
   if (!itemData) return null;
 
+  const sizeClass = size === 'hero'
+    ? 'w-28 h-36 sm:w-32 sm:h-40'
+    : 'w-20 h-24 sm:w-22 sm:h-28';
+
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className="flex flex-col items-center gap-1.5 shrink-0">
       {item?.image ? (
-        <img src={item.image} alt={itemData.name}
-          className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover border border-surface-lighter" />
+        <img
+          src={item.image}
+          alt={itemData.name}
+          className={`${sizeClass} rounded-xl object-cover border border-white/5 shadow-lg shadow-black/20`}
+        />
       ) : (
-        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-surface-lighter flex items-center justify-center border border-surface-lighter">
-          <span className="text-xs text-text-muted text-center px-1 leading-tight">{itemData.name || '?'}</span>
+        <div className={`${sizeClass} rounded-xl bg-surface-lighter flex items-center justify-center border border-white/5`}>
+          <span className="text-xs text-text-muted text-center px-2 leading-tight">{itemData.name || '?'}</span>
         </div>
       )}
-      <span className="text-xs text-text-muted text-center leading-tight max-w-20 sm:max-w-24 line-clamp-1">
+      <span className="text-[11px] text-text-muted text-center leading-tight max-w-20 sm:max-w-22 line-clamp-1 font-medium">
         {itemData.name}
       </span>
     </div>
   );
 }
 
+function getAllItems(outfit) {
+  const items = [];
+  if (outfit.items?.top) items.push({ key: 'top', data: outfit.items.top });
+  if (outfit.items?.bottom) items.push({ key: 'bottom', data: outfit.items.bottom });
+  if (outfit.items?.footwear) items.push({ key: 'footwear', data: outfit.items.footwear });
+  if (outfit.items?.outerwear) items.push({ key: 'outerwear', data: outfit.items.outerwear });
+  if (outfit.items?.accessories) {
+    outfit.items.accessories.forEach((acc, i) => items.push({ key: `acc-${i}`, data: acc }));
+  }
+  return items;
+}
+
 export default function OutfitCard({ outfit, reasoning }) {
   const [expanded, setExpanded] = useState(false);
   const wardrobe = getWardrobe();
   const vibe = vibeStyles[outfit.vibe] || vibeStyles.casual_chill;
-
-  // Pick ONE best note to show — priority: tip > reasoning > best_for
   const note = outfit.style_tip || reasoning || outfit.best_for || '';
+  const allItems = getAllItems(outfit);
 
   return (
-    <div className="bg-surface-light rounded-xl border border-surface-lighter overflow-hidden hover:border-primary/20 transition-all group">
-      {/* Header */}
-      <div className="p-3 border-b border-surface-lighter">
-        <div className="flex items-center justify-between gap-2">
-          <h3 className="font-semibold text-sm leading-snug truncate">{outfit.outfit_name || 'Outfit'}</h3>
-          <span className={`shrink-0 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${vibe.bg} ${vibe.text}`}>
-            {vibe.label}
-          </span>
-        </div>
-        {outfit.color_palette && (
-          <div className="flex items-center gap-1 mt-1.5 overflow-x-auto scrollbar-none">
-            {outfit.color_palette.map((color, i) => (
-              <span key={i} className="px-2 py-0.5 rounded-full text-[11px] bg-surface-lighter capitalize whitespace-nowrap">{color}</span>
-            ))}
-          </div>
-        )}
+    <div className="bg-surface-light rounded-2xl border border-surface-lighter overflow-hidden hover:border-primary/20 transition-all">
+      {/* Title bar — minimal */}
+      <div className="flex items-center justify-between px-4 pt-3 pb-2">
+        <h3 className="font-bold text-base leading-snug truncate">{outfit.outfit_name || 'Outfit'}</h3>
+        <span className={`shrink-0 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide ${vibe.bg} ${vibe.text}`}>
+          {vibe.label}
+        </span>
       </div>
 
-      {/* Items */}
-      <div className="p-3">
-        <div className="flex flex-wrap gap-2 justify-center">
-          {outfit.items?.top && <ItemThumb itemData={outfit.items.top} wardrobe={wardrobe} />}
-          {outfit.items?.bottom && <ItemThumb itemData={outfit.items.bottom} wardrobe={wardrobe} />}
-          {outfit.items?.footwear && <ItemThumb itemData={outfit.items.footwear} wardrobe={wardrobe} />}
-          {outfit.items?.outerwear && <ItemThumb itemData={outfit.items.outerwear} wardrobe={wardrobe} />}
-          {outfit.items?.accessories?.map((acc, i) => (
-            <ItemThumb key={i} itemData={acc} wardrobe={wardrobe} />
+      {/* Items — horizontal scroll */}
+      <div className="px-4 py-3">
+        <div className="flex gap-3 overflow-x-auto scrollbar-none pb-1">
+          {allItems.map((item, idx) => (
+            <ItemThumb
+              key={item.key}
+              itemData={item.data}
+              wardrobe={wardrobe}
+              size={allItems.length === 1 ? 'hero' : 'default'}
+            />
           ))}
         </div>
       </div>
 
-      {/* Single note line — tap to expand */}
+      {/* Note — subtle bottom bar */}
       {note && (
-        <div className="px-3 pb-3">
-          <p
-            className={`text-xs text-text-muted leading-snug cursor-pointer ${!expanded ? 'line-clamp-1' : ''}`}
-            onClick={() => setExpanded(!expanded)}
-          >
+        <div
+          className="px-4 py-2.5 bg-white/[0.02] border-t border-white/5 cursor-pointer"
+          onClick={() => setExpanded(!expanded)}
+        >
+          <p className={`text-xs text-text-muted leading-relaxed ${!expanded ? 'line-clamp-1' : ''}`}>
             {note}
           </p>
         </div>
