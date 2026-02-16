@@ -193,7 +193,7 @@ export default function OutfitIdeas({ onNavigate }) {
               return (
                 <button key={v} onClick={() => setActiveVibeFilter(v)}
                   className={`px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
-                    activeVibeFilter === v ? 'bg-accent text-black' : 'bg-surface-light text-text-muted border border-surface-lighter'
+                    activeVibeFilter === v ? 'bg-primary text-white' : 'bg-surface-light text-text-muted border border-surface-lighter'
                   }`}>{vibeLabels[v]} ({count})</button>
               );
             })}

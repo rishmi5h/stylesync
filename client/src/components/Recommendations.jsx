@@ -37,11 +37,11 @@ export default function Recommendations({ onNavigate }) {
           disabled={loading || !isReady}
           className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl font-medium text-xs transition-colors ${
             isReady
-              ? 'bg-accent hover:bg-accent-light text-black'
+              ? 'bg-primary hover:bg-primary-dark text-white'
               : 'bg-surface-lighter text-text-muted cursor-not-allowed'
           }`}
         >
-          {loading && <div className="w-3 h-3 border-2 border-black border-t-transparent rounded-full animate-spin" />}
+          {loading && <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />}
           {data ? 'Refresh' : 'Generate'}
         </button>
       </div>
@@ -73,7 +73,7 @@ export default function Recommendations({ onNavigate }) {
 
       {loading && (
         <div className="flex flex-col items-center py-16">
-          <div className="w-10 h-10 border-2 border-accent border-t-transparent rounded-full animate-spin mb-4" />
+          <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mb-4" />
           <p className="text-xs text-text-muted animate-pulse">Analyzing gaps...</p>
         </div>
       )}
@@ -150,7 +150,7 @@ export default function Recommendations({ onNavigate }) {
             disabled={!isReady}
             className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all ${
               isReady
-                ? 'bg-accent hover:bg-accent-light text-black'
+                ? 'bg-primary hover:bg-primary-dark text-white'
                 : 'bg-surface-lighter text-text-muted cursor-not-allowed'
             }`}
           >

@@ -138,15 +138,26 @@ export default function TodayPick({ onNavigate }) {
         </div>
       )}
 
-      {/* Empty state — just a button */}
+      {/* Empty state */}
       {!outfit && !loading && (
-        <div className="text-center py-10 sm:py-16">
+        <div className="flex flex-col items-center text-center py-12 sm:py-20">
+          <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/15 to-accent/10 flex items-center justify-center mb-6">
+            <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold mb-1.5">Ready for your outfit?</h3>
+          <p className="text-sm text-text-muted max-w-xs mb-8">
+            {isReady
+              ? "We'll pick the perfect outfit based on your style, wardrobe, and today's weather."
+              : "Complete your profile and add some clothes to get started."}
+          </p>
           <button
             onClick={() => generatePick([])}
             disabled={!isReady}
             className={`px-8 py-3 rounded-xl text-sm font-semibold transition-all ${
               isReady
-                ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg shadow-primary/20'
+                ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg shadow-primary/20 hover:shadow-primary/30'
                 : 'bg-surface-lighter text-text-muted cursor-not-allowed'
             }`}
           >

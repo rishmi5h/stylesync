@@ -67,10 +67,10 @@ export default function Sidebar({ activeSection, onNavigate }) {
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-              <span className="text-xs font-bold text-white">D</span>
+              <span className="text-xs font-bold text-white">S</span>
             </div>
             <span className="text-lg font-semibold text-brand tracking-tight">
-              Drapely
+              StyleSync
             </span>
           </div>
           <button
@@ -111,9 +111,9 @@ export default function Sidebar({ activeSection, onNavigate }) {
         <div className="p-5 pb-4">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/15">
-              <span className="text-sm font-bold text-white">D</span>
+              <span className="text-sm font-bold text-white">S</span>
             </div>
-            <h1 className="text-lg font-semibold text-brand tracking-tight">Drapely</h1>
+            <h1 className="text-lg font-semibold text-brand tracking-tight">StyleSync</h1>
           </div>
         </div>
 

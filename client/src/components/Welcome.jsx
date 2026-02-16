@@ -47,11 +47,11 @@ export default function Welcome({ onComplete }) {
 
         <div className="relative z-10">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 mx-auto shadow-xl shadow-primary/20">
-            <span className="text-xl font-bold text-white">D</span>
+            <span className="text-xl font-bold text-white">S</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-semibold mb-3 tracking-tight">
-            <span className="text-brand">Drapely</span>
+            <span className="text-brand">StyleSync</span>
           </h1>
           <p className="text-text-muted text-sm max-w-xs mb-10">
             Your AI stylist for daily outfits, occasions & wardrobe planning.
