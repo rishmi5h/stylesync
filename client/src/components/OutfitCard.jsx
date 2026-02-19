@@ -58,7 +58,7 @@ export default function OutfitCard({ outfit, reasoning }) {
   const allItems = getAllItems(outfit);
 
   return (
-    <div className="bg-surface-light rounded-2xl border border-surface-lighter overflow-hidden hover:border-primary/20 transition-all">
+    <div className="bg-surface-light rounded-2xl border border-surface-lighter overflow-hidden hover:border-primary/20 card-hover">
       {/* Title + vibe inline */}
       <div className="flex items-center justify-between gap-2 px-3 py-2.5">
         <h3 className="font-bold text-sm leading-snug truncate">{outfit.outfit_name || 'Outfit'}</h3>

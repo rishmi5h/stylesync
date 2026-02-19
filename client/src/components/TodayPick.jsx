@@ -141,7 +141,7 @@ export default function TodayPick({ onNavigate }) {
       {/* Empty state */}
       {!outfit && !loading && (
         <div className="flex flex-col items-center text-center py-12 sm:py-20">
-          <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/15 to-accent/10 flex items-center justify-center mb-6">
+          <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/15 to-accent/10 flex items-center justify-center mb-6 animate-float">
             <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
             </svg>
@@ -155,9 +155,9 @@ export default function TodayPick({ onNavigate }) {
           <button
             onClick={() => generatePick([])}
             disabled={!isReady}
-            className={`px-8 py-3 rounded-xl text-sm font-semibold transition-all ${
+            className={`px-8 py-3 rounded-xl text-sm font-semibold transition-all btn-press ${
               isReady
-                ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg shadow-primary/20 hover:shadow-primary/30'
+                ? 'bg-primary hover:bg-primary-dark text-white'
                 : 'bg-surface-lighter text-text-muted cursor-not-allowed'
             }`}
           >
@@ -169,12 +169,7 @@ export default function TodayPick({ onNavigate }) {
       {/* Loading */}
       {loading && (
         <div className="text-center py-12">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 animate-pulse">
-            <svg className="w-6 h-6 text-primary animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-            </svg>
-          </div>
+          <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-xs text-text-muted">{loadingMsg}</p>
         </div>
       )}
@@ -196,7 +191,7 @@ export default function TodayPick({ onNavigate }) {
             <button
               onClick={handleWoreIt}
               disabled={worn}
-              className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all btn-press ${
                 worn ? 'bg-success/15 text-success' : 'bg-success/10 hover:bg-success/20 text-success border border-success/20'
               }`}
             >
@@ -204,7 +199,7 @@ export default function TodayPick({ onNavigate }) {
             </button>
             <button
               onClick={handleRefresh}
-              className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-surface-lighter hover:bg-surface-lighter/80 text-text-muted"
+              className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-surface-lighter hover:bg-surface-lighter/80 text-text-muted btn-press"
             >
               Skip
             </button>

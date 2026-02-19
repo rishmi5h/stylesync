@@ -110,7 +110,7 @@ export default function Sidebar({ activeSection, onNavigate }) {
         {/* Logo */}
         <div className="p-5 pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/15">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/15 logo-glow">
               <span className="text-sm font-bold text-white">S</span>
             </div>
             <h1 className="text-lg font-semibold text-brand tracking-tight">StyleSync</h1>
@@ -127,7 +127,7 @@ export default function Sidebar({ activeSection, onNavigate }) {
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl mb-0.5 transition-all duration-200 ${
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl mb-0.5 transition-all duration-200 btn-press ${
                   isActive
                     ? 'bg-primary/12 text-primary'
                     : 'text-text-muted hover:text-text hover:bg-surface-light/60'

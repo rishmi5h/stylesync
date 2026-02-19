@@ -120,7 +120,7 @@ export default function WardrobeManager() {
             {wardrobe.length} item{wardrobe.length !== 1 ? 's' : ''} in your collection
           </p>
         </div>
-        <label className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-medium text-sm transition-colors shadow-lg shadow-primary/20">
+        <label className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-medium text-sm transition-colors btn-press">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
@@ -224,7 +224,7 @@ export default function WardrobeManager() {
       {/* Wardrobe Grid */}
       {wardrobe.length === 0 ? (
         <div className="text-center py-20">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-surface-light flex items-center justify-center">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-surface-light flex items-center justify-center animate-float">
             <svg className="w-10 h-10 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.41a2.25 2.25 0 013.182 0l2.909 2.91m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
             </svg>
@@ -236,13 +236,14 @@ export default function WardrobeManager() {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {wardrobe.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              onDelete={handleDelete}
-              onEdit={handleEdit}
-            />
+          {wardrobe.map((item, index) => (
+            <div key={item.id} className="card-stagger" style={{ animationDelay: `${index * 60}ms` }}>
+              <ItemCard
+                item={item}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
+            </div>
           ))}
         </div>
       )}

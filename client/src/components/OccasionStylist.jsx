@@ -238,7 +238,7 @@ export default function OccasionStylist({ onNavigate }) {
             <button
               onClick={handleGenerate}
               disabled={loading || !isReady}
-              className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-all ${
+              className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-all btn-press ${
                 isReady
                   ? 'bg-primary hover:bg-primary-dark text-white'
                   : 'bg-surface-lighter text-text-muted cursor-not-allowed'
@@ -284,7 +284,7 @@ export default function OccasionStylist({ onNavigate }) {
 
           {/* Outfit cards */}
           {outfits.map((outfit, idx) => (
-            <div key={idx} className="space-y-2">
+            <div key={idx} className="card-stagger space-y-2" style={{ animationDelay: `${idx * 100}ms` }}>
               {/* Rank + score inline */}
               <div className="flex items-center gap-1.5">
                 <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${

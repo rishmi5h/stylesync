@@ -104,7 +104,7 @@ export default function OutfitIdeas({ onNavigate }) {
         <button
           onClick={handleGenerate}
           disabled={loading || !isReady}
-          className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl font-medium text-sm transition-all ${
+          className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl font-medium text-sm transition-all btn-press ${
             isReady
               ? 'bg-primary hover:bg-primary-dark text-white'
               : 'bg-surface-lighter text-text-muted cursor-not-allowed'
@@ -200,7 +200,11 @@ export default function OutfitIdeas({ onNavigate }) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filteredOutfits.map((outfit, i) => <OutfitCard key={i} outfit={outfit} />)}
+            {filteredOutfits.map((outfit, i) => (
+              <div key={i} className="card-stagger" style={{ animationDelay: `${i * 80}ms` }}>
+                <OutfitCard outfit={outfit} />
+              </div>
+            ))}
           </div>
 
           {filteredOutfits.length === 0 && (

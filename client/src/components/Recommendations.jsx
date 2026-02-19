@@ -35,7 +35,7 @@ export default function Recommendations({ onNavigate }) {
         <button
           onClick={handleGenerate}
           disabled={loading || !isReady}
-          className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl font-medium text-xs transition-colors ${
+          className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl font-medium text-xs transition-colors btn-press ${
             isReady
               ? 'bg-primary hover:bg-primary-dark text-white'
               : 'bg-surface-lighter text-text-muted cursor-not-allowed'
@@ -83,11 +83,11 @@ export default function Recommendations({ onNavigate }) {
           {/* Analysis */}
           {data.wardrobe_analysis && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="p-3 rounded-xl bg-surface-light border border-surface-lighter">
+              <div className="card-stagger p-3 rounded-xl bg-surface-light border border-surface-lighter" style={{ animationDelay: '0ms' }}>
                 <p className="text-xs font-semibold text-success uppercase mb-1">Strengths</p>
                 <p className="text-xs text-text-muted leading-relaxed">{data.wardrobe_analysis.strengths}</p>
               </div>
-              <div className="p-3 rounded-xl bg-surface-light border border-surface-lighter">
+              <div className="card-stagger p-3 rounded-xl bg-surface-light border border-surface-lighter" style={{ animationDelay: '80ms' }}>
                 <p className="text-xs font-semibold text-accent uppercase mb-1">Gaps</p>
                 <p className="text-xs text-text-muted leading-relaxed">{data.wardrobe_analysis.gaps}</p>
               </div>
@@ -96,7 +96,7 @@ export default function Recommendations({ onNavigate }) {
 
           {/* Recommendations */}
           {data.recommendations?.map((rec, i) => (
-            <div key={i} className="p-3 sm:p-4 rounded-xl bg-surface-light border border-surface-lighter">
+            <div key={i} className="card-stagger p-3 sm:p-4 rounded-xl bg-surface-light border border-surface-lighter" style={{ animationDelay: `${(i + 1) * 100}ms` }}>
               <div className="flex items-center justify-between gap-2 mb-2">
                 <h3 className="text-sm font-bold capitalize">{rec.item_type}</h3>
                 <span className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-accent/20 text-accent">#{i + 1}</span>
@@ -148,7 +148,7 @@ export default function Recommendations({ onNavigate }) {
           <button
             onClick={handleGenerate}
             disabled={!isReady}
-            className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+            className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all btn-press ${
               isReady
                 ? 'bg-primary hover:bg-primary-dark text-white'
                 : 'bg-surface-lighter text-text-muted cursor-not-allowed'

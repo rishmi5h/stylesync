@@ -42,11 +42,11 @@ export default function Welcome({ onComplete }) {
   // Step 0: Hero
   if (step === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 relative overflow-hidden">
+      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 relative overflow-hidden page-enter">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 mx-auto shadow-xl shadow-primary/20">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 mx-auto logo-glow">
             <span className="text-xl font-bold text-white">S</span>
           </div>
 
@@ -59,7 +59,7 @@ export default function Welcome({ onComplete }) {
 
           <button
             onClick={() => setStep(1)}
-            className="px-10 py-3.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white rounded-2xl text-sm font-semibold transition-all duration-300 shadow-xl shadow-primary/20 hover:shadow-primary/30"
+            className="px-10 py-3.5 bg-primary hover:bg-primary-dark text-white rounded-2xl text-sm font-semibold transition-colors btn-press"
           >
             Get Started
           </button>
@@ -72,7 +72,7 @@ export default function Welcome({ onComplete }) {
   // Step 1: Gender
   if (step === 1) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
+      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 page-enter">
         <div className="flex gap-1 mb-8">
           <div className="w-10 h-1 rounded-full bg-primary" />
           <div className="w-10 h-1 rounded-full bg-surface-lighter" />
@@ -103,7 +103,7 @@ export default function Welcome({ onComplete }) {
   // Step 2: Location
   if (step === 2) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
+      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 page-enter">
         <div className="flex gap-1 mb-8">
           <div className="w-10 h-1 rounded-full bg-primary" />
           <div className="w-10 h-1 rounded-full bg-primary" />
@@ -125,9 +125,9 @@ export default function Welcome({ onComplete }) {
           <button
             onClick={() => setStep(3)}
             disabled={!location.trim()}
-            className={`w-full mt-4 py-4 rounded-2xl text-sm font-semibold transition-all duration-200 ${
+            className={`w-full mt-4 py-4 rounded-2xl text-sm font-semibold transition-all duration-200 btn-press ${
               location.trim()
-                ? 'bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/15'
+                ? 'bg-primary hover:bg-primary-dark text-white'
                 : 'bg-surface-lighter text-text-muted cursor-not-allowed'
             }`}
           >
@@ -147,7 +147,7 @@ export default function Welcome({ onComplete }) {
   // Step 3: Styles
   if (step === 3) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
+      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 page-enter">
         <div className="flex gap-1 mb-8">
           <div className="w-10 h-1 rounded-full bg-primary" />
           <div className="w-10 h-1 rounded-full bg-primary" />
@@ -175,9 +175,9 @@ export default function Welcome({ onComplete }) {
         <button
           onClick={handleFinish}
           disabled={styles.length === 0}
-          className={`w-full max-w-md py-4 rounded-2xl text-sm font-semibold transition-all duration-200 ${
+          className={`w-full max-w-md py-4 rounded-2xl text-sm font-semibold transition-all duration-200 btn-press ${
             styles.length > 0
-              ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-xl shadow-primary/20 hover:shadow-primary/30'
+              ? 'bg-primary hover:bg-primary-dark text-white'
               : 'bg-surface-lighter text-text-muted cursor-not-allowed'
           }`}
         >

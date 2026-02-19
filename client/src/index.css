@@ -50,46 +50,12 @@ body {
   background: var(--color-primary);
 }
 
-/* Glass effect */
-.glass {
-  background: rgba(30, 30, 40, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-/* Glow */
-.glow-primary {
-  box-shadow: 0 0 20px rgba(124, 92, 252, 0.12), 0 0 60px rgba(124, 92, 252, 0.04);
-}
-
 /* Brand gradient text */
 .text-brand {
   background: linear-gradient(135deg, #7c5cfc 0%, #36d6b5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-/* Shimmer */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.shimmer {
-  background: linear-gradient(90deg, transparent, rgba(124, 92, 252, 0.06), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Fade in */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-in {
-  animation: fadeIn 0.3s ease-out;
 }
 
 /* Hide scrollbar for horizontal scroll areas */
@@ -100,4 +66,157 @@ body {
 
 .scrollbar-none::-webkit-scrollbar {
   display: none;
+}
+
+/* ─── Motion System ─── */
+
+/* Smooth page transition on section change */
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-enter {
+  animation: pageEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Staggered card entrance */
+@keyframes cardReveal {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-stagger {
+  opacity: 0;
+  animation: cardReveal 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Fade in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* Card hover — single clean lift with border glow */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(124, 92, 252, 0.1);
+}
+
+/* Subtle image zoom on card hover */
+.card-hover:hover img {
+  transform: scale(1.03);
+}
+
+.card-hover img {
+  transition: transform 0.4s ease;
+}
+
+/* Button press — tactile click */
+.btn-press {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-press:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+/* Subtle breathing glow on logo */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(124, 92, 252, 0.1), 0 0 2px rgba(54, 214, 181, 0.06); }
+  50% { box-shadow: 0 0 16px rgba(124, 92, 252, 0.2), 0 0 6px rgba(54, 214, 181, 0.12); }
+}
+
+.logo-glow {
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+/* Mouse-following ambient light */
+.cursor-spotlight {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 92, 252, 0.04) 0%, rgba(54, 214, 181, 0.015) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+  transform: translate(-50%, -50%);
+  transition: left 0.5s ease-out, top 0.5s ease-out, opacity 0.6s ease;
+  opacity: 0;
+}
+
+.cursor-spotlight.active {
+  opacity: 1;
+}
+
+/* Slow ambient background orb */
+@keyframes orbDrift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20px, -15px); }
+}
+
+.bg-orb {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 92, 252, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbDrift 25s ease-in-out infinite;
+  filter: blur(80px);
+}
+
+.bg-orb-accent {
+  background: radial-gradient(circle, rgba(54, 214, 181, 0.025) 0%, transparent 70%);
+  animation-delay: -12s;
+  animation-duration: 30s;
+}
+
+/* Gentle float for empty state icons */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ─── Accessibility ─── */
+@media (prefers-reduced-motion: reduce) {
+  .page-enter,
+  .card-stagger,
+  .animate-float,
+  .logo-glow,
+  .bg-orb,
+  .bg-orb-accent {
+    animation: none !important;
+  }
+
+  .cursor-spotlight {
+    display: none;
+  }
+
+  .card-stagger {
+    opacity: 1;
+  }
+
+  .card-hover:hover {
+    transform: none;
+  }
+
+  .btn-press:active {
+    transform: none;
+  }
 }

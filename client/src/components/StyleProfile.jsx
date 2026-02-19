@@ -83,7 +83,7 @@ export default function StyleProfile() {
           <button
             onClick={handleSave}
             disabled={!isComplete}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all btn-press ${
               isComplete
                 ? 'bg-primary hover:bg-primary-dark text-white'
                 : 'bg-surface-lighter text-text-muted cursor-not-allowed'

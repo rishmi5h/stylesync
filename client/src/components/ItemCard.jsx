@@ -47,13 +47,13 @@ export default function ItemCard({ item, onDelete, onEdit, compact = false }) {
   }
 
   return (
-    <div className="group relative bg-surface-light rounded-2xl overflow-hidden border border-surface-lighter hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
+    <div className="group relative bg-surface-light rounded-2xl overflow-hidden border border-surface-lighter hover:border-primary/30 card-hover">
       {item.image && (
         <div className="aspect-square overflow-hidden">
           <img
             src={item.image}
             alt={item.description}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover"
           />
         </div>
       )}

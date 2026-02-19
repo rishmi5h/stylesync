@@ -44,7 +44,9 @@ function App() {
 
   return (
     <Layout activeSection={activeSection} onNavigate={setActiveSection}>
-      {renderSection()}
+      <div key={activeSection} className="page-enter">
+        {renderSection()}
+      </div>
     </Layout>
   );
 }
