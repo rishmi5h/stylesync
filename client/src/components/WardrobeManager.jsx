@@ -115,7 +115,7 @@ export default function WardrobeManager() {
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="text-2xl font-bold">My Wardrobe</h2>
+          <h2 className="text-2xl font-bold section-heading">My Wardrobe</h2>
           <p className="text-text-muted text-sm mt-1">
             {wardrobe.length} item{wardrobe.length !== 1 ? 's' : ''} in your collection
           </p>

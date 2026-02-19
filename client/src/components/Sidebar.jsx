@@ -117,7 +117,7 @@ export default function Sidebar({ activeSection, onNavigate }) {
           </div>
         </div>
 
-        <div className="mx-4 mb-2 h-px bg-surface-lighter/50" />
+        <div className="mx-4 mb-2 divider-ornament" />
 
         <nav className="flex-1 px-3 overflow-y-auto py-2">
           {navItems.map((item) => {
@@ -129,7 +129,7 @@ export default function Sidebar({ activeSection, onNavigate }) {
                 onClick={() => onNavigate(item.id)}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl mb-0.5 transition-all duration-200 btn-press ${
                   isActive
-                    ? 'bg-primary/12 text-primary'
+                    ? 'bg-primary/12 text-primary border-l-2 border-l-accent'
                     : 'text-text-muted hover:text-text hover:bg-surface-light/60'
                 }`}
               >

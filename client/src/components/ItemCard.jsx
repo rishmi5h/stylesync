@@ -47,7 +47,7 @@ export default function ItemCard({ item, onDelete, onEdit, compact = false }) {
   }
 
   return (
-    <div className="group relative bg-surface-light rounded-2xl overflow-hidden border border-surface-lighter hover:border-primary/30 card-hover">
+    <div className="group relative bg-surface-light rounded-2xl border border-surface-lighter hover:border-primary/30 card-hover card-ornament">
       {item.image && (
         <div className="aspect-square overflow-hidden">
           <img

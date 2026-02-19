@@ -53,8 +53,8 @@ export default function Welcome({ onComplete }) {
 
         {/* Main content — staggered entrance */}
         <div className="relative z-10 flex flex-col items-center pointer-events-none">
-          {/* Logo with ring burst + line sweep */}
-          <div className="relative mb-8">
+          {/* Logo with ring burst + line sweep + Mughal arch frame */}
+          <div className="relative mb-8 mughal-arch">
             <div className="hero-ring" />
             <div className="hero-line-sweep" />
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center hero-logo-entrance logo-glow">
@@ -68,6 +68,9 @@ export default function Welcome({ onComplete }) {
               <span className="text-brand hero-title-shimmer">StyleSync</span>
             </h1>
           </div>
+
+          {/* Rangoli divider between title and tagline */}
+          <div className="divider-ornament w-40 mb-4 opacity-0" style={{ animation: 'heroReveal 0.6s ease 0.55s forwards' }} />
 
           {/* Tagline — fades up after title */}
           <p className="text-text-muted text-sm sm:text-base max-w-sm mb-12 opacity-0" style={{ animation: 'heroReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards' }}>
@@ -84,6 +87,9 @@ export default function Welcome({ onComplete }) {
           <p className="text-text-muted/30 text-xs mt-4 opacity-0" style={{ animation: 'heroReveal 0.5s ease 1.1s forwards' }}>
             30-second setup
           </p>
+
+          {/* Rangoli floor border */}
+          <div className="rangoli-border w-full mt-8 h-3 opacity-0" style={{ animation: 'heroReveal 0.5s ease 1.2s forwards' }} />
         </div>
       </div>
     );
@@ -93,13 +99,16 @@ export default function Welcome({ onComplete }) {
   if (step === 1) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 page-enter">
-        <div className="flex gap-1 mb-8">
-          <div className="w-10 h-1 rounded-full bg-primary" />
-          <div className="w-10 h-1 rounded-full bg-surface-lighter" />
-          <div className="w-10 h-1 rounded-full bg-surface-lighter" />
+        <div className="step-ornament mb-8">
+          <div className="step-dot active" />
+          <div className="step-line" />
+          <div className="step-dot" />
+          <div className="step-line" />
+          <div className="step-dot" />
         </div>
-        <h2 className="text-2xl font-semibold mb-2 tracking-tight">I dress as...</h2>
-        <p className="text-text-muted text-sm mb-10">Helps us pick the right fits</p>
+        <h2 className="text-2xl font-semibold mb-2 tracking-tight section-heading">I dress as...</h2>
+        <p className="text-text-muted text-sm mb-4">Helps us pick the right fits</p>
+        <div className="divider-ornament w-32 mb-8" />
 
         <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
           {[
@@ -110,7 +119,7 @@ export default function Welcome({ onComplete }) {
             <button
               key={g.value}
               onClick={() => { setGender(g.value); setStep(2); }}
-              className="flex-1 px-6 py-4 rounded-2xl text-sm font-medium transition-all duration-200 border border-surface-lighter bg-surface-light hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
+              className={`option-tile flex-1 px-6 py-4 rounded-2xl text-sm font-medium transition-all duration-200 border border-surface-lighter bg-surface-light hover:border-primary/40 hover:bg-primary/5 hover:text-primary ${gender === g.value ? 'selected border-primary/40 bg-primary/5 text-primary' : ''}`}
             >
               {g.label}
             </button>
@@ -124,13 +133,16 @@ export default function Welcome({ onComplete }) {
   if (step === 2) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 page-enter">
-        <div className="flex gap-1 mb-8">
-          <div className="w-10 h-1 rounded-full bg-primary" />
-          <div className="w-10 h-1 rounded-full bg-primary" />
-          <div className="w-10 h-1 rounded-full bg-surface-lighter" />
+        <div className="step-ornament mb-8">
+          <div className="step-dot active" />
+          <div className="step-line active" />
+          <div className="step-dot active" />
+          <div className="step-line" />
+          <div className="step-dot" />
         </div>
-        <h2 className="text-2xl font-semibold mb-2 tracking-tight">Where are you based?</h2>
-        <p className="text-text-muted text-sm mb-10">For weather-aware outfits</p>
+        <h2 className="text-2xl font-semibold mb-2 tracking-tight section-heading">Where are you based?</h2>
+        <p className="text-text-muted text-sm mb-4">For weather-aware outfits</p>
+        <div className="divider-ornament w-32 mb-8" />
 
         <div className="w-full max-w-md">
           <input
@@ -168,22 +180,25 @@ export default function Welcome({ onComplete }) {
   if (step === 3) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 page-enter">
-        <div className="flex gap-1 mb-8">
-          <div className="w-10 h-1 rounded-full bg-primary" />
-          <div className="w-10 h-1 rounded-full bg-primary" />
-          <div className="w-10 h-1 rounded-full bg-primary" />
+        <div className="step-ornament mb-8">
+          <div className="step-dot active" />
+          <div className="step-line active" />
+          <div className="step-dot active" />
+          <div className="step-line active" />
+          <div className="step-dot active" />
         </div>
-        <h2 className="text-2xl font-semibold mb-2 tracking-tight">Pick your vibe</h2>
-        <p className="text-text-muted text-sm mb-10">Select one or more</p>
+        <h2 className="text-2xl font-semibold mb-2 tracking-tight section-heading">Pick your vibe</h2>
+        <p className="text-text-muted text-sm mb-4">Select one or more</p>
+        <div className="divider-ornament w-32 mb-8" />
 
         <div className="grid grid-cols-2 gap-2.5 w-full max-w-md mb-8">
           {QUICK_STYLES.map((s) => (
             <button
               key={s.value}
               onClick={() => toggleStyle(s.value)}
-              className={`px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 border ${
+              className={`option-tile px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 border ${
                 styles.includes(s.value)
-                  ? 'border-primary bg-primary/10 text-primary'
+                  ? 'selected border-primary bg-primary/10 text-primary'
                   : 'border-surface-lighter bg-surface-light text-text-muted hover:border-primary/30 hover:text-text'
               }`}
             >

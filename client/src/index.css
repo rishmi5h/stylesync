@@ -322,6 +322,176 @@ body {
   transform: scaleX(0);
 }
 
+/* ─── Indian Architectural Motifs ─── */
+
+/* Mughal arch frame — decorative arch silhouette behind hero elements */
+.mughal-arch {
+  position: relative;
+}
+
+.mughal-arch::before {
+  content: '';
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 60px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60'%3E%3Cpath d='M10 60 L10 30 Q10 5 60 5 Q110 5 110 30 L110 60' fill='none' stroke='%237c5cfc' stroke-width='0.8' opacity='0.2'/%3E%3Cpath d='M18 60 L18 32 Q18 12 60 12 Q102 12 102 32 L102 60' fill='none' stroke='%2336d6b5' stroke-width='0.5' opacity='0.15'/%3E%3Ccircle cx='60' cy='5' r='1.5' fill='%237c5cfc' opacity='0.3'/%3E%3Ccircle cx='60' cy='12' r='1' fill='%2336d6b5' opacity='0.25'/%3E%3Cpath d='M55 8 L57 10 L55 12 L53 10 Z' fill='none' stroke='%237c5cfc' stroke-width='0.4' opacity='0.15' transform='translate(10, -3) scale(0.6)'/%3E%3Cpath d='M55 8 L57 10 L55 12 L53 10 Z' fill='none' stroke='%237c5cfc' stroke-width='0.4' opacity='0.15' transform='translate(-10, -3) scale(0.6)'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+  opacity: 0;
+  animation: heroReveal 0.8s ease 0.6s forwards;
+}
+
+/* Rangoli floor pattern — decorative bottom border for hero */
+.rangoli-border {
+  position: relative;
+}
+
+.rangoli-border::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='12' viewBox='0 0 280 12'%3E%3Cpath d='M140 1 L143 4 L140 7 L137 4 Z' fill='%237c5cfc' opacity='0.4'/%3E%3Cpath d='M120 3 L122 5 L120 7 L118 5 Z' fill='%2336d6b5' opacity='0.25'/%3E%3Cpath d='M160 3 L162 5 L160 7 L158 5 Z' fill='%2336d6b5' opacity='0.25'/%3E%3Cline x1='40' y1='5' x2='115' y2='5' stroke='%237c5cfc' stroke-width='0.5' opacity='0.2'/%3E%3Cline x1='165' y1='5' x2='240' y2='5' stroke='%237c5cfc' stroke-width='0.5' opacity='0.2'/%3E%3Ccircle cx='40' cy='5' r='1.5' fill='%2336d6b5' opacity='0.2'/%3E%3Ccircle cx='240' cy='5' r='1.5' fill='%2336d6b5' opacity='0.2'/%3E%3Ccircle cx='80' cy='5' r='0.8' fill='%237c5cfc' opacity='0.15'/%3E%3Ccircle cx='200' cy='5' r='0.8' fill='%237c5cfc' opacity='0.15'/%3E%3Cpath d='M98 3.5 L100 5 L98 6.5 L96 5 Z' fill='%237c5cfc' opacity='0.12'/%3E%3Cpath d='M182 3.5 L184 5 L182 6.5 L180 5 Z' fill='%237c5cfc' opacity='0.12'/%3E%3Cline x1='0' y1='10' x2='280' y2='10' stroke='%237c5cfc' stroke-width='0.3' opacity='0.08'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+}
+
+/* Ornamental step indicator — jali lattice dots replacing plain bars */
+.step-ornament {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.step-ornament .step-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid var(--color-surface-lighter);
+  background: var(--color-surface-light);
+}
+
+.step-ornament .step-dot.active {
+  border-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  box-shadow: 0 0 8px rgba(124, 92, 252, 0.3);
+}
+
+.step-ornament .step-line {
+  width: 20px;
+  height: 1px;
+  background: var(--color-surface-lighter);
+  transition: background 0.4s ease;
+}
+
+.step-ornament .step-line.active {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+}
+
+/* Onboarding option tile — selection card with subtle ornament */
+.option-tile {
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.option-tile::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M1 8 L1 1 L8 1' fill='none' stroke='%237c5cfc' stroke-width='0.5' opacity='0'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.option-tile.selected::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M1 8 L1 1 L8 1' fill='none' stroke='%237c5cfc' stroke-width='0.6' opacity='0.5'/%3E%3Ccircle cx='1' cy='1' r='0.8' fill='%2336d6b5' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 1;
+}
+
+/* Rangoli-inspired decorative underline for page headings */
+.section-heading {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 12px;
+}
+
+.section-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  min-width: 80px;
+  height: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='6' viewBox='0 0 120 6'%3E%3Cpath d='M60 0 L63 3 L60 6 L57 3 Z' fill='%237c5cfc' opacity='0.7'/%3E%3Cline x1='10' y1='3' x2='54' y2='3' stroke='%237c5cfc' stroke-width='0.75' opacity='0.4'/%3E%3Ccircle cx='10' cy='3' r='1.5' fill='%2336d6b5' opacity='0.5'/%3E%3Cline x1='66' y1='3' x2='110' y2='3' stroke='%237c5cfc' stroke-width='0.75' opacity='0.4'/%3E%3Ccircle cx='110' cy='3' r='1.5' fill='%2336d6b5' opacity='0.5'/%3E%3Cpath d='M30 1.5 L31.5 3 L30 4.5 L28.5 3 Z' fill='%2336d6b5' opacity='0.35'/%3E%3Cpath d='M90 1.5 L91.5 3 L90 4.5 L88.5 3 Z' fill='%2336d6b5' opacity='0.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/* Jali lattice-inspired ornamental divider */
+.divider-ornament {
+  height: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M12 1 L14.5 4 L12 7 L9.5 4 Z' fill='none' stroke='%237c5cfc' stroke-width='0.6' opacity='0.3'/%3E%3Ccircle cx='12' cy='4' r='0.8' fill='%2336d6b5' opacity='0.4'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/* Mandala-inspired corner ornaments for cards — reveal on hover */
+.card-ornament {
+  position: relative;
+}
+
+.card-ornament::before,
+.card-ornament::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.card-ornament::before {
+  top: 6px;
+  left: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M1 12 L1 1 L12 1' fill='none' stroke='%237c5cfc' stroke-width='0.75' opacity='0.5'/%3E%3Cpath d='M3 8 L3 3 L8 3' fill='none' stroke='%2336d6b5' stroke-width='0.5' opacity='0.4'/%3E%3Ccircle cx='1' cy='1' r='1.2' fill='%237c5cfc' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+}
+
+.card-ornament::after {
+  bottom: 6px;
+  right: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M15 4 L15 15 L4 15' fill='none' stroke='%237c5cfc' stroke-width='0.75' opacity='0.5'/%3E%3Cpath d='M13 8 L13 13 L8 13' fill='none' stroke='%2336d6b5' stroke-width='0.5' opacity='0.4'/%3E%3Ccircle cx='15' cy='15' r='1.2' fill='%237c5cfc' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+}
+
+.card-ornament:hover::before,
+.card-ornament:hover::after {
+  opacity: 1;
+}
+
 /* ─── Accessibility ─── */
 @media (prefers-reduced-motion: reduce) {
   .page-enter,
@@ -354,5 +524,22 @@ body {
 
   .btn-press:active {
     transform: none;
+  }
+
+  .card-ornament::before,
+  .card-ornament::after {
+    transition: none !important;
+  }
+
+  .mughal-arch::before {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .step-ornament .step-dot,
+  .step-ornament .step-line,
+  .option-tile,
+  .option-tile::before {
+    transition: none !important;
   }
 }

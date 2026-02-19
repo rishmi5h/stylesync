@@ -105,7 +105,7 @@ export default function TodayPick({ onNavigate }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold">Today's Pick</h2>
+          <h2 className="text-xl sm:text-2xl font-bold section-heading">Today's Pick</h2>
           <p className="text-xs text-text-muted mt-0.5">{dayName}, {dateStr}</p>
         </div>
         <div className="flex flex-wrap gap-1.5 justify-end">

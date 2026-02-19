@@ -96,7 +96,7 @@ export default function OutfitIdeas({ onNavigate }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold">Outfit Ideas</h2>
+          <h2 className="text-xl sm:text-2xl font-bold section-heading">Outfit Ideas</h2>
           <p className="text-text-muted text-xs mt-0.5">
             {outfits && outfits.length > 0 ? `${outfits.length} combos` : `${wardrobe.length} items`}
           </p>

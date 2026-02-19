@@ -31,7 +31,7 @@ export default function Recommendations({ onNavigate }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl sm:text-2xl font-bold">Suggestions</h2>
+        <h2 className="text-xl sm:text-2xl font-bold section-heading">Suggestions</h2>
         <button
           onClick={handleGenerate}
           disabled={loading || !isReady}
