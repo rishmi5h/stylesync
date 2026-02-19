@@ -140,25 +140,6 @@ body {
   animation: glowPulse 4s ease-in-out infinite;
 }
 
-/* Mouse-following ambient light */
-.cursor-spotlight {
-  position: fixed;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 92, 252, 0.04) 0%, rgba(54, 214, 181, 0.015) 40%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-  filter: blur(80px);
-  transform: translate(-50%, -50%);
-  transition: left 0.5s ease-out, top 0.5s ease-out, opacity 0.6s ease;
-  opacity: 0;
-}
-
-.cursor-spotlight.active {
-  opacity: 1;
-}
-
 /* Slow ambient background orb */
 @keyframes orbDrift {
   0%, 100% { transform: translate(0, 0); }
@@ -193,6 +174,154 @@ body {
   animation: float 3s ease-in-out infinite;
 }
 
+/* ─── Welcome Hero Cinematic Entrance ─── */
+
+/* Shared entrance curve — smooth deceleration */
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Line sweeps across behind the logo */
+@keyframes heroLineSweep {
+  0% { transform: scaleX(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+/* Subtle shimmer across the title text */
+@keyframes heroShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Expanding ring behind logo */
+@keyframes heroRing {
+  from {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.5);
+  }
+}
+
+/* Staggered children — each child fades up with blur */
+.hero-entrance > * {
+  opacity: 0;
+  animation: heroReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-entrance > *:nth-child(1) { animation-delay: 0.1s; }
+.hero-entrance > *:nth-child(2) { animation-delay: 0.35s; }
+.hero-entrance > *:nth-child(3) { animation-delay: 0.55s; }
+.hero-entrance > *:nth-child(4) { animation-delay: 0.75s; }
+.hero-entrance > *:nth-child(5) { animation-delay: 0.95s; }
+
+/* Logo special entrance — scale bounce */
+@keyframes logoDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.6) rotate(-8deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(4px) scale(1.05) rotate(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+.hero-logo-entrance {
+  opacity: 0;
+  animation: logoDrop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+}
+
+/* Title reveal — clips upward */
+@keyframes titleSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-title-clip {
+  overflow: hidden;
+}
+
+.hero-title-clip > * {
+  opacity: 0;
+  animation: titleSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+}
+
+/* Shimmer effect on brand text after entrance */
+.hero-title-shimmer {
+  background-size: 200% auto;
+  animation: heroReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards, heroShimmer 3s ease-in-out 1.3s 1;
+}
+
+/* Button entrance — slides up with a slight overshoot */
+@keyframes buttonReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  70% {
+    transform: translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-btn-entrance {
+  opacity: 0;
+  animation: buttonReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+}
+
+/* Expanding ring element */
+.hero-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid rgba(124, 92, 252, 0.3);
+  pointer-events: none;
+  animation: heroRing 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  opacity: 0;
+}
+
+/* Horizontal sweep line */
+.hero-line-sweep {
+  position: absolute;
+  top: 50%;
+  left: -20%;
+  width: 140%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(124, 92, 252, 0.4), rgba(54, 214, 181, 0.3), transparent);
+  transform-origin: left;
+  animation: heroLineSweep 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+  transform: scaleX(0);
+}
+
 /* ─── Accessibility ─── */
 @media (prefers-reduced-motion: reduce) {
   .page-enter,
@@ -200,12 +329,19 @@ body {
   .animate-float,
   .logo-glow,
   .bg-orb,
-  .bg-orb-accent {
+  .bg-orb-accent,
+  .hero-logo-entrance,
+  .hero-btn-entrance,
+  .hero-title-shimmer,
+  .hero-ring,
+  .hero-line-sweep {
     animation: none !important;
   }
 
-  .cursor-spotlight {
-    display: none;
+  .hero-entrance > *,
+  .hero-title-clip > * {
+    animation: none !important;
+    opacity: 1 !important;
   }
 
   .card-stagger {

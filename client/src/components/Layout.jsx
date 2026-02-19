@@ -1,32 +1,11 @@
-import { useRef, useCallback } from 'react';
 import Sidebar from './Sidebar';
+import InteractiveParticles from './InteractiveParticles';
 
 export default function Layout({ activeSection, onNavigate, children }) {
-  const spotlightRef = useRef(null);
-
-  const handleMouseMove = useCallback((e) => {
-    const el = spotlightRef.current;
-    if (!el) return;
-    el.style.left = `${e.clientX}px`;
-    el.style.top = `${e.clientY}px`;
-    if (!el.classList.contains('active')) {
-      el.classList.add('active');
-    }
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    const el = spotlightRef.current;
-    if (el) el.classList.remove('active');
-  }, []);
-
   return (
-    <div
-      className="min-h-screen relative overflow-hidden"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      {/* Mouse-following spotlight */}
-      <div ref={spotlightRef} className="cursor-spotlight" />
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Interactive particle background — site-wide */}
+      <InteractiveParticles density="subtle" />
 
       {/* Ambient gradient orbs */}
       <div className="bg-orb" style={{ top: '10%', right: '-10%' }} />

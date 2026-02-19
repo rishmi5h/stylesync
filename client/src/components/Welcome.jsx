@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { saveProfile } from '../utils/storage';
+import InteractiveParticles from './InteractiveParticles';
 
 const QUICK_STYLES = [
   { value: 'minimal', label: 'Minimal' },
@@ -39,31 +40,50 @@ export default function Welcome({ onComplete }) {
     onComplete();
   };
 
-  // Step 0: Hero
+  // Step 0: Hero — cinematic first impression
   if (step === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 relative overflow-hidden page-enter">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 relative overflow-hidden">
+        {/* Interactive particle canvas — reacts to mouse */}
+        <InteractiveParticles />
 
-        <div className="relative z-10">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 mx-auto logo-glow">
-            <span className="text-xl font-bold text-white">S</span>
+        {/* Background glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/[0.03] rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-accent/[0.02] rounded-full blur-[80px] pointer-events-none" />
+
+        {/* Main content — staggered entrance */}
+        <div className="relative z-10 flex flex-col items-center pointer-events-none">
+          {/* Logo with ring burst + line sweep */}
+          <div className="relative mb-8">
+            <div className="hero-ring" />
+            <div className="hero-line-sweep" />
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center hero-logo-entrance logo-glow">
+              <span className="text-2xl font-bold text-white">S</span>
+            </div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-semibold mb-3 tracking-tight">
-            <span className="text-brand">StyleSync</span>
-          </h1>
-          <p className="text-text-muted text-sm max-w-xs mb-10">
+          {/* Title — clip reveal */}
+          <div className="hero-title-clip mb-3">
+            <h1 className="text-5xl sm:text-6xl font-bold tracking-tight">
+              <span className="text-brand hero-title-shimmer">StyleSync</span>
+            </h1>
+          </div>
+
+          {/* Tagline — fades up after title */}
+          <p className="text-text-muted text-sm sm:text-base max-w-sm mb-12 opacity-0" style={{ animation: 'heroReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards' }}>
             Your AI stylist for daily outfits, occasions & wardrobe planning.
           </p>
 
+          {/* CTA button — last to appear with slight bounce */}
           <button
             onClick={() => setStep(1)}
-            className="px-10 py-3.5 bg-primary hover:bg-primary-dark text-white rounded-2xl text-sm font-semibold transition-colors btn-press"
+            className="px-12 py-4 bg-primary hover:bg-primary-dark text-white rounded-2xl text-sm font-semibold transition-colors btn-press hero-btn-entrance pointer-events-auto"
           >
             Get Started
           </button>
-          <p className="text-text-muted/40 text-xs mt-3">30-second setup</p>
+          <p className="text-text-muted/30 text-xs mt-4 opacity-0" style={{ animation: 'heroReveal 0.5s ease 1.1s forwards' }}>
+            30-second setup
+          </p>
         </div>
       </div>
     );
