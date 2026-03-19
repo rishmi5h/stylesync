@@ -2,6 +2,15 @@ import { useState } from 'react';
 import { saveProfile } from '../utils/storage';
 import InteractiveParticles from './InteractiveParticles';
 
+const REGIONS = [
+  { value: 'North India', label: 'North India', city: 'Delhi' },
+  { value: 'South India', label: 'South India', city: 'Chennai' },
+  { value: 'West India', label: 'West India', city: 'Mumbai' },
+  { value: 'East India', label: 'East India', city: 'Kolkata' },
+  { value: 'Northeast India', label: 'Northeast', city: 'Guwahati' },
+  { value: 'Central India', label: 'Central India', city: 'Nagpur' },
+];
+
 const QUICK_STYLES = [
   { value: 'minimal', label: 'Minimal' },
   { value: 'streetwear', label: 'Streetwear' },
@@ -16,7 +25,7 @@ const QUICK_STYLES = [
 export default function Welcome({ onComplete }) {
   const [step, setStep] = useState(0);
   const [gender, setGender] = useState('');
-  const [location, setLocation] = useState('');
+  const [region, setRegion] = useState('');
   const [styles, setStyles] = useState([]);
 
   const toggleStyle = (s) => {
@@ -26,9 +35,11 @@ export default function Welcome({ onComplete }) {
   };
 
   const handleFinish = () => {
+    const selectedRegion = REGIONS.find((r) => r.value === region);
     const profile = {
       gender,
-      location,
+      region,
+      location: selectedRegion?.city || '',
       styles,
       budget: 'mid-range',
       schedule: {
@@ -129,7 +140,7 @@ export default function Welcome({ onComplete }) {
     );
   }
 
-  // Step 2: Location
+  // Step 2: Region
   if (step === 2) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 page-enter">
@@ -140,38 +151,38 @@ export default function Welcome({ onComplete }) {
           <div className="step-line" />
           <div className="step-dot" />
         </div>
-        <h2 className="text-2xl font-semibold mb-2 tracking-tight section-heading">Where are you based?</h2>
-        <p className="text-text-muted text-sm mb-4">For weather-aware outfits</p>
+        <h2 className="text-2xl font-semibold mb-2 tracking-tight section-heading">Pick your region</h2>
+        <p className="text-text-muted text-sm mb-4">For weather-aware outfits (optional)</p>
         <div className="divider-ornament w-32 mb-8" />
 
-        <div className="w-full max-w-md">
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="e.g., Mumbai, Delhi, Bangalore"
-            autoFocus
-            className="w-full px-5 py-4 rounded-2xl bg-surface-light border border-surface-lighter text-sm text-center focus:outline-none focus:border-primary/50 transition-colors placeholder:text-text-muted/40"
-            onKeyDown={(e) => { if (e.key === 'Enter' && location.trim()) setStep(3); }}
-          />
-          <button
-            onClick={() => setStep(3)}
-            disabled={!location.trim()}
-            className={`w-full mt-4 py-4 rounded-2xl text-sm font-semibold transition-all duration-200 btn-press ${
-              location.trim()
-                ? 'bg-primary hover:bg-primary-dark text-white'
-                : 'bg-surface-lighter text-text-muted cursor-not-allowed'
-            }`}
-          >
-            Continue
-          </button>
-          <button
-            onClick={() => setStep(1)}
-            className="mt-4 text-xs text-text-muted/60 hover:text-text-muted transition-colors"
-          >
-            Back
-          </button>
+        <div className="grid grid-cols-2 gap-2.5 w-full max-w-md mb-8">
+          {REGIONS.map((r) => (
+            <button
+              key={r.value}
+              onClick={() => setRegion(region === r.value ? '' : r.value)}
+              className={`option-tile px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 border ${
+                region === r.value
+                  ? 'selected border-primary bg-primary/10 text-primary'
+                  : 'border-surface-lighter bg-surface-light text-text-muted hover:border-primary/30 hover:text-text'
+              }`}
+            >
+              {r.label}
+            </button>
+          ))}
         </div>
+
+        <button
+          onClick={() => setStep(3)}
+          className="w-full max-w-md py-4 rounded-2xl text-sm font-semibold transition-all duration-200 btn-press bg-primary hover:bg-primary-dark text-white"
+        >
+          {region ? 'Continue' : 'Skip'}
+        </button>
+        <button
+          onClick={() => setStep(1)}
+          className="mt-4 text-xs text-text-muted/60 hover:text-text-muted transition-colors"
+        >
+          Back
+        </button>
       </div>
     );
   }

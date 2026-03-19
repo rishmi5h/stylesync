@@ -28,13 +28,22 @@ const occasionOptions = [
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
+const regionOptions = [
+  { value: 'North India', label: 'North India', city: 'Delhi' },
+  { value: 'South India', label: 'South India', city: 'Chennai' },
+  { value: 'West India', label: 'West India', city: 'Mumbai' },
+  { value: 'East India', label: 'East India', city: 'Kolkata' },
+  { value: 'Northeast India', label: 'Northeast', city: 'Guwahati' },
+  { value: 'Central India', label: 'Central India', city: 'Nagpur' },
+];
+
 const budgetOptions = [
   { value: 'budget', label: 'Budget' },
   { value: 'mid-range', label: 'Mid-Range' },
   { value: 'premium', label: 'Premium' },
 ];
 
-export default function StyleProfile() {
+export default function StyleProfile({ onNavigate }) {
   const [saved, setSaved] = useState(false);
   const [showSchedule, setShowSchedule] = useState(false);
   const [profile, setProfile] = useState(() => {
@@ -43,6 +52,7 @@ export default function StyleProfile() {
       styles: [],
       schedule: days.reduce((acc, day) => ({ ...acc, [day.toLowerCase()]: 'casual' }), {}),
       gender: '',
+      region: '',
       location: '',
       budget: 'mid-range',
     };
@@ -72,7 +82,7 @@ export default function StyleProfile() {
     setTimeout(() => setSaved(false), 3000);
   };
 
-  const isComplete = profile.styles.length > 0 && profile.gender && profile.location;
+  const isComplete = profile.styles.length > 0 && profile.gender;
 
   return (
     <div>
@@ -139,16 +149,32 @@ export default function StyleProfile() {
           </div>
         </section>
 
-        {/* Location */}
+        {/* Region */}
         <section>
-          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Location</h3>
-          <input
-            type="text"
-            value={profile.location}
-            onChange={(e) => { setProfile({ ...profile, location: e.target.value }); setSaved(false); }}
-            placeholder="Mumbai, Delhi, Bangalore..."
-            className="w-full px-3 py-2.5 rounded-lg bg-surface-light border border-surface-lighter text-sm focus:outline-none focus:border-primary transition-colors placeholder:text-text-muted/50"
-          />
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">
+            Region
+            <span className="font-normal normal-case tracking-normal text-text-muted/60 ml-1">(optional — for weather)</span>
+          </h3>
+          <div className="flex flex-wrap gap-1.5">
+            {regionOptions.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => {
+                  const newRegion = profile.region === opt.value ? '' : opt.value;
+                  const newLocation = newRegion ? opt.city : '';
+                  setProfile({ ...profile, region: newRegion, location: newLocation });
+                  setSaved(false);
+                }}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all border ${
+                  profile.region === opt.value
+                    ? 'border-primary bg-primary/15 text-primary'
+                    : 'border-surface-lighter bg-surface-light text-text-muted hover:border-primary/30'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
         </section>
 
         <div className="divider-ornament" />
@@ -212,8 +238,28 @@ export default function StyleProfile() {
         </section>
 
         {!isComplete && (
-          <p className="text-text-muted text-xs pb-4">Select style, gender & location to save</p>
+          <p className="text-text-muted text-xs pb-4">Select style & gender to save</p>
         )}
+
+        {/* Suggestions — accessible from Profile on mobile */}
+        <div className="divider-ornament" />
+        <button
+          onClick={() => onNavigate('suggestions')}
+          className="w-full flex items-center gap-3 p-4 rounded-xl bg-surface-light border border-surface-lighter hover:border-primary/30 transition-all group btn-press"
+        >
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
+            <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+            </svg>
+          </div>
+          <div className="text-left flex-1">
+            <span className="text-sm font-medium text-text block">Wardrobe Suggestions</span>
+            <span className="text-xs text-text-muted">Get AI-powered tips to fill gaps in your wardrobe</span>
+          </div>
+          <svg className="w-4 h-4 text-text-muted group-hover:text-primary group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
       </div>
     </div>
   );
